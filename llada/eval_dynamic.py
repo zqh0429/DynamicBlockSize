@@ -52,11 +52,9 @@ def add_gumbel_noise(logits, temperature):
     return logits.exp() / gumbel_noise
 
 # ==============================================================================
-# 注意力捕获钩子 (Attention Hooks)
+# 注意力捕获钩子 (Attention Hooks) - 🌟 适配 Rollout 算法
 # ==============================================================================
 original_sdpa = F.scaled_dot_product_attention
-original_F_softmax = F.softmax
-original_torch_softmax = torch.softmax
 captured_attentions = []
 
 def hooked_sdpa(query, key, value, attn_mask=None, dropout_p=0.0, is_causal=False, **kwargs):
@@ -75,54 +73,30 @@ def hooked_sdpa(query, key, value, attn_mask=None, dropout_p=0.0, is_causal=Fals
             
     attn_probs = torch.softmax(attn_weight, dim=-1)
     
-    # 【显存修复核心】：截获后立马放进列表
-    captured_attentions.append(attn_probs.detach().float())
-    # 只要超过 3 层，立马把最老的矩阵从显存里删掉！(立省 90% 显存)
-    if len(captured_attentions) > 3:
-        del captured_attentions[0]
+    # 【Rollout 显存修复核心】：截获后立刻在 Head 维度求平均，缩减 32 倍显存！
+    # 这样我们就可以安全地保留网络所有层的信息，而不需要删除。
+    if attn_probs.dim() == 4:
+        captured_attentions.append(attn_probs.detach().float().mean(dim=1))
+    else:
+        captured_attentions.append(attn_probs.detach().float())
         
     return original_sdpa(query, key, value, attn_mask, dropout_p, is_causal, **kwargs)
-
-def hooked_F_softmax(*args, **kwargs):
-    out = original_F_softmax(*args, **kwargs)
-    if out.ndim == 4: 
-        captured_attentions.append(out.detach().float())
-        if len(captured_attentions) > 3: del captured_attentions[0]
-    return out
-
-def hooked_torch_softmax(*args, **kwargs):
-    out = original_torch_softmax(*args, **kwargs)
-    if out.ndim == 4: 
-        captured_attentions.append(out.detach().float())
-        if len(captured_attentions) > 3: del captured_attentions[0]
-    return out
 
 @contextmanager
 def capture_attention():
     global captured_attentions
     captured_attentions = []
     F.scaled_dot_product_attention = hooked_sdpa
-    F.softmax = hooked_F_softmax
-    torch.softmax = hooked_torch_softmax
     try:
         yield captured_attentions
     finally:
         F.scaled_dot_product_attention = original_sdpa
-        F.softmax = original_F_softmax
-        torch.softmax = original_torch_softmax
         # 退出上下文时，彻底清空显存垃圾
         captured_attentions = []
 
 # ==============================================================================
 # 基础工具函数
 # ==============================================================================
-def add_gumbel_noise(logits, temperature):
-    if temperature == 0: return logits
-    logits = logits.to(torch.float64)
-    noise = torch.rand_like(logits, dtype=torch.float64)
-    gumbel_noise = (- torch.log(noise)) ** temperature
-    return logits.exp() / gumbel_noise
-
 def get_num_transfer_tokens(block_mask_index: torch.Tensor, steps: int) -> torch.Tensor:
     device = block_mask_index.device
     dtype = torch.long
@@ -239,59 +213,105 @@ def get_transfer_index_dynamic(logits, temperature, remasking, mask_index, x, nu
 
     return x0, transfer_index
 
+import matplotlib.pyplot as plt
+import os
+import math
+
+def visualize_attention_across_layers(captured_attentions, prev_s, current_s, probe_limit, nfe, step_save_dir="attn_visuals"):
+    """
+    可视化每一层的 MASK 关注度求和曲线。
+    这能帮你直观地挑出“信号最尖锐、底噪最低”的那几层。
+    """
+    os.makedirs(step_save_dir, exist_ok=True)
+    num_layers = len(captured_attentions)
+    
+    # 动态计算网格大小 (例如 32 层就画一个 4x8 的网格)
+    cols = 4
+    rows = math.ceil(num_layers / cols)
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 5, rows * 3), sharey=True)
+    axes = axes.flatten()
+
+    for layer_idx, attn_matrix in enumerate(captured_attentions):
+        # 处理不同 Hook 返回的维度 (通常取 batch [0])
+        if attn_matrix.dim() == 3:
+            attn = attn_matrix[0] 
+        else:
+            attn = attn_matrix
+
+        # 核心：提取前文对 MASK 的注意力，并沿 Query 维度求和
+        # 形状：[prev_s : current_s, current_s : current_s + probe_limit]
+        real_to_mask_attn = attn[prev_s : current_s, current_s : current_s + probe_limit]
+        attention_sum = real_to_mask_attn.sum(dim=0).cpu().float().numpy()
+
+        # 绘制折线图
+        ax = axes[layer_idx]
+        ax.plot(range(len(attention_sum)), attention_sum, marker='o', markersize=4, linewidth=1.5)
+        ax.set_title(f"Layer {layer_idx}", fontsize=10)
+        ax.grid(True, linestyle='--', alpha=0.6)
+        
+        # 标出平均底噪线
+        mu_sum = attention_sum.mean()
+        ax.axhline(y=mu_sum, color='r', linestyle=':', alpha=0.8, label="Mean Base Noise")
+
+    # 隐藏多余的子图
+    for i in range(num_layers, len(axes)):
+        fig.delaxes(axes[i])
+
+    plt.tight_layout()
+    save_path = os.path.join(step_save_dir, f"nfe_{nfe}_attn_sum.png")
+    plt.savefig(save_path, dpi=150)
+    plt.close()
+    print(f"📊 每一层注意力波动图已保存至: {save_path}")
 
 import torch
 import math
 
-# ==============================================================================
-# 终极版：带未来视野的峰值跌落检测 (Look-Ahead Recovery)
-# ==============================================================================
 def find_dependency_boundary(
     avg_attn: torch.Tensor,
     current_s: int,
     prev_s: int,
     min_block_length: int,
-    probe_limit: int,
-    drop_ratio: float = 0.3  # 半山腰线：低于最高点的 50% 视为跌落
+    window_size: int,       # 💡 新增：大探测视野 (比如 128)
+    fallback_length: int,   # 💡 新增：找不到时的安全退回长度 (比如 32)
+    spike_multiplier: float = 6.0
 ):
-    """能够完美识别并保留内部从句低谷，只切断真正的语义死亡点"""
-    if probe_limit <= min_block_length + 1:
-        return probe_limit
+    """
+    【大视窗前文共识探测】：在更大的 window_size 视野内寻找突刺。
+    如果找到，直接在突刺处截断（允许超过 fallback_length）；
+    如果整个视野内都没有突刺，安全退回到 fallback_length。
+    """
+    # 保护逻辑
+    if window_size <= min_block_length or prev_s >= current_s:
+        return min(fallback_length, window_size)
 
-    # 1. 提取注意力依赖度
-    prev_block_attn = avg_attn[current_s : current_s + probe_limit, prev_s : current_s]
-    dependency = prev_block_attn.sum(dim=-1)
+    # 1. 提取：前文对【大视窗】内所有 MASK 的注意力
+    real_to_mask_attn = avg_attn[prev_s : current_s, current_s : current_s + window_size]
     
-    # 2. 找到全场最高峰（通常是前两三个词带来的距离红利）
-    peak = dependency.max().item()
-    threshold = peak * drop_ratio
-    
-    best_k = probe_limit 
+    # 2. 沿 Query 求和，算底噪
+    attention_sum = real_to_mask_attn.mean(dim=0)
+    mu_sum = attention_sum.mean().item()
 
-    # 3. 从前往后扫，遇到跌破阈值的词，先别急着切
-    for k in range(min_block_length, probe_limit):
-        if dependency[k] < threshold:
-            
-            future_max = dependency[k:].max().item()
-            
-            if future_max >= threshold:
-                continue
-            else:
-                best_k = k+1
-                break
+    # 3. 在大视窗内扫描寻找共识突刺
+    for k in range(min_block_length, window_size):
+        current_sum = attention_sum[k].item()
+        
+        # 💡 如果找到了强锚点，果断在这里截断！
+        if current_sum > (mu_sum * spike_multiplier):
+            best_k = k + 1
+            print(f"    🔭 [大视窗切分] 视野 {window_size} | 词 {k} 处捕获远端锚点，切分长度放大至 {best_k} (关注度 {current_sum:.4f} > 底噪 {mu_sum:.4f} * {spike_multiplier})")
+            return best_k
 
-    return best_k
+    # 4. 如果遍历完了整个大视窗都没找到突刺，为了安全，退回 32
+    return min(fallback_length, window_size)
 
 # ==============================================================================
-# 修改后的 generate_with_dynamic_dual_cache (支持 Attention Entropy Remasking)
-# ==============================================================================
+
 @torch.no_grad()
 def generate_with_dynamic_dual_cache(
     model, prompt, steps=128, gen_length=128, init_block_length=32, temperature=0.,
-    remasking='low_confidence', mask_id=126336, threshold=None, 
-    delimiter_ids=[198], delimiter_threshold=float('inf'),
-    drop_epsilon=1.0, sink_epsilon=1.5, min_block_length=4,
-    entropy_threshold=0.3  # 【新增核心参数】：熵增超过 0.2 的旧词将被强行 Remask
+    remasking='low_confidence', mask_id=126336, threshold=None, min_block_length=4,
+    enable_dynamic_block=True,
+    enable_attn_remask=False
 ): 
     assert prompt.shape[0] == 1, "Batch size > 1 is not supported"
     
@@ -303,15 +323,15 @@ def generate_with_dynamic_dual_cache(
     generated_length = 0
     nfe_history = []  
     block_history = []
+    attention_history = []
     
     prompt_length = prompt.shape[1]
-    # 【修改】：初始化设为 prompt_length，因为我们绝不能去 remask 用户的 prompt
     prev_s = prompt_length 
     
     while generated_length < gen_length: 
         nfe = 0
         current_s = prompt_length + generated_length
-        active_start = current_s # 默认当前 Block 的解码起点
+        active_start = current_s 
 
         old_disable_state = torch._dynamo.config.disable
         torch._dynamo.config.disable = True
@@ -329,63 +349,71 @@ def generate_with_dynamic_dual_cache(
         
         probe_limit = min(init_block_length, gen_length - generated_length)
         
+        remaining_length = gen_length - generated_length
+        # 探测视野：放宽到全局长度的 2.5% (比如 512 的 12.5% 就是 64)
+        window_size = min(int(0.25 * gen_length), remaining_length)
+        # 安全退回长度：32
+        fallback_length = min(init_block_length, remaining_length)
+        
         if len(captured) > 0:
-            total_layers = len(captured)
-            selected_captured = captured[-3:] if total_layers >= 3 else captured
+            B, L_seq, S_seq = captured[0].shape
+            device = captured[0].device
+            I = torch.eye(L_seq, device=device).unsqueeze(0).expand(B, -1, -1)
+            # if nfe == 1 and current_s > 0:
+            #     visualize_attention_across_layers(
+            #         captured_attentions=captured,
+            #         prev_s=prev_s,
+            #         current_s=current_s,
+            #         probe_limit=probe_limit,
+            #         nfe=nfe
+            #     )
+
+            rollout = None
+            # 只保留最后几层 attention，避免依赖此前混入 softmax 时的硬编码索引。
+            num_layers_for_rollout = 3
+            truncated_captured = captured[-num_layers_for_rollout:] if len(captured) > 0 else []
             
-            stacked_attn = torch.stack([c for c in selected_captured])
-            if stacked_attn.dim() == 5:
-                avg_attn = stacked_attn.mean(dim=(0, 2))[0].float()
+            for W in truncated_captured:
+                A = 0.5 * W + 0.5 * I
+                if rollout is None:
+                    rollout = A
+                else:
+                    rollout = torch.bmm(A, rollout)
+            if rollout is None:
+                block_length = fallback_length
+                avg_attn = None
             else:
-                avg_attn = stacked_attn.mean(dim=0)[0].float()
-                
-            block_length = find_dependency_boundary(
-                avg_attn=avg_attn,
-                current_s=current_s,
-                prev_s=prev_s, # 这里的 prev_s 保证是上一个生成的 Block
-                min_block_length=min_block_length,
-                probe_limit=probe_limit,
-            )
+                avg_attn = rollout[0]
+
+            # 🚀 3. 动态边界探测 (传入大视窗和退回长度)
+            if avg_attn is not None and enable_dynamic_block:
+                block_length = find_dependency_boundary(
+                    avg_attn=avg_attn,
+                    current_s=current_s,
+                    prev_s=prev_s,
+                    min_block_length=min_block_length,
+                    window_size=window_size,         # 传入大视野
+                    fallback_length=fallback_length, # 传入安全底线 32
+                    spike_multiplier=4.0
+                )
+            else:
+                block_length = fallback_length
+
+            if avg_attn is not None:
+                real_to_mask_attn = avg_attn[prev_s : current_s, current_s : current_s + block_length]
+                focus_scores = real_to_mask_attn.sum(dim=0) 
+                attention_history.extend(focus_scores.cpu().float().numpy().tolist())
+            else:
+                attention_history.extend([0.0] * block_length)
             
-            # ==============================================================================
-            # 🚀 【核心新增逻辑】：动态注意力熵增检测与 Remask 机制
-            # ==============================================================================
-            if prev_s < current_s: # 确保存在前一个生成的 Block
-                # 1. P_old：前一个 Block 仅看旧上下文时的注意力分布
-                P_old = avg_attn[prev_s:current_s, :current_s]
-                # 重新归一化，使其成为合法的概率分布
-                P_old_norm = P_old / (P_old.sum(dim=-1, keepdim=True) + 1e-9)
-                # 计算香农熵 H = -sum(p * log(p))
-                H_old = -(P_old_norm * torch.log(P_old_norm + 1e-9)).sum(dim=-1)
-
-                # 2. P_new：前一个 Block 看到“旧上下文 + 新 Block”时的注意力分布
-                P_new = avg_attn[prev_s:current_s, :current_s + block_length]
-                P_new_norm = P_new / (P_new.sum(dim=-1, keepdim=True) + 1e-9)
-                H_new = -(P_new_norm * torch.log(P_new_norm + 1e-9)).sum(dim=-1)
-
-                # 3. 寻找“事后迷茫”的 Token
-                delta_H = H_new - H_old
-                
-                # 找到熵增超过阈值的相对索引
-                remask_relative_idx = torch.nonzero(delta_H > entropy_threshold).squeeze(-1)
-                print(len(remask_relative_idx))
-                
-                if len(remask_relative_idx) > 0:
-                    remask_global_idx = prev_s + remask_relative_idx
-                    # 【绝杀】：将这些动摇的位置重新变回 MASK！
-                    x[:, remask_global_idx] = mask_id
-                    
-                    # 扩展当前循环的“活跃区域”，把前一个 Block 包容进来一起解码
-                    active_start = prev_s 
         else:
-            block_length = probe_limit 
+            block_length = fallback_length 
 
         block_history.append(block_length)
-        
         block_end = current_s + block_length
         generated_length += block_length
         
-        # 限制第一步 Transfer 只能在活跃区域内进行 (防止解开未来的 MASK 或是历史的非 MASK)
+        # 🚀 4. 内循环降噪
         mask_index = (x == mask_id)
         mask_index[:, block_end:] = 0
         mask_index[:, :active_start] = 0 
@@ -393,44 +421,70 @@ def generate_with_dynamic_dual_cache(
         x0, transfer_index = get_transfer_index(logits, predicted_tokens, remasking, mask_index, x, None, threshold)
         x[transfer_index] = x0[transfer_index]
 
-        # 准备 Dual Cache 的局部重算遮罩
         replace_position = torch.zeros_like(x, dtype=torch.bool)
         replace_position[:, active_start:block_end] = 1
         
-        # 2nd and later denoising steps in block
         while True:
-            # 跳出条件：活跃区域内已经没有 MASK 了
-            if (x[:, active_start:block_end] == mask_id).sum() == 0:
+            current_mask_indices = (x[:, active_start:block_end] == mask_id)
+            num_remaining_masks = current_mask_indices.sum().item()
+            
+            if num_remaining_masks == 0:
                 break
                 
-            # 注意：内部循环的所有张量切片，都必须从 active_start 开始！
-            mask_index = (x[:, active_start:block_end] == mask_id)
-            
-            block_output = model(
-                x[:, active_start:block_end], 
-                past_key_values=full_cache, 
-                use_cache=True, 
-                replace_position=replace_position
-            )
+            with capture_attention() as block_captured:
+                block_output = model(
+                    x[:, active_start:block_end], 
+                    past_key_values=full_cache, 
+                    use_cache=True, 
+                    replace_position=replace_position
+                )
             
             block_logits = block_output.logits
-            block_logits_with_noise = add_gumbel_noise(block_logits, temperature=temperature)
-            block_predicted_tokens = torch.argmax(block_logits_with_noise, dim=-1)
+            block_predicted_tokens = torch.argmax(add_gumbel_noise(block_logits, temperature), dim=-1)
             nfe += 1
-            
+
             x0, transfer_index = get_transfer_index(
-                block_logits, block_predicted_tokens, remasking, mask_index, 
+                block_logits, block_predicted_tokens, remasking, current_mask_indices, 
                 x[:, active_start:block_end], None, threshold
             )
             
+            # 内部迭代的 Attention 校验保留了 Query 视角的微观判断
+            if enable_attn_remask and num_remaining_masks > init_block_length/2 and len(block_captured) > 0:
+                num_layers_to_fuse = 3 
+                truncated_captured = block_captured[-num_layers_to_fuse:] if len(block_captured) >= num_layers_to_fuse else block_captured
+                smoothed_attn = torch.stack(truncated_captured, dim=0).mean(dim=0)
+                
+                B, Q_len, KV_len = smoothed_attn.shape
+                
+                if active_start > prev_s:
+                    local_external_focus = smoothed_attn[:, :, prev_s:active_start].max(dim=-1).values
+                    
+                    internal_start_idx = KV_len - Q_len
+                    internal_attn_map = smoothed_attn[:, :, internal_start_idx:] 
+                    eye = torch.eye(Q_len, device=internal_attn_map.device).bool().unsqueeze(0).expand(B, -1, -1)
+                    
+                    internal_attn_map = internal_attn_map.masked_fill(eye, 0)
+                    internal_dependency = internal_attn_map.max(dim=-1).values
+                    
+                    epsilon_remask = 0.02 
+                    is_unstable = internal_dependency > (local_external_focus * 10 + epsilon_remask)
+                    
+                    bad_attention_mask = is_unstable
+                    original_transfer_index = transfer_index.clone()
+                    transfer_index = transfer_index & (~bad_attention_mask)
+
+                    if transfer_index.sum() == 0 and original_transfer_index.sum() > 0:
+                        candidates = torch.nonzero(original_transfer_index[0]).squeeze(-1)
+                        if len(candidates) > 0:
+                            fallback_idx = candidates[0]
+                            transfer_index[0, fallback_idx] = True
+                
             x[:, active_start:block_end][transfer_index] = x0[transfer_index]
             
         nfe_history.append(nfe)
-        
-        # 核心流转：无论是否发生了回滚，当前的尽头变成了下一次的起点
         prev_s = active_start 
 
-    return x, nfe, block_history
+    return x, nfe, block_history, attention_history
 
 # ==============================================================================
 # 工具函数 & Harness
@@ -624,9 +678,8 @@ class LLaDAEvalHarness(LM):
             if self.use_cache:
                 if self.dual_cache:
                     if getattr(self, "use_dynamic_block", False):
-                        generated_answer, nfe, block_boundaries = generate_with_dynamic_dual_cache(
+                        generated_answer, nfe, block_boundaries, attn_history = generate_with_dynamic_dual_cache(
                             model=self.model, prompt=input_ids, steps=self.steps, gen_length=self.gen_length,
-                            # max_block_length=self.max_block_length, min_block_length=self.min_block_length,
                             temperature=0, remasking=self.remasking, threshold=self.threshold,
                             mask_id=self.mask_id,
                         )
