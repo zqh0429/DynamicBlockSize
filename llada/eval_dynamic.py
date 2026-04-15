@@ -37,6 +37,8 @@ import json
 import time
 import torch._dynamo
 
+DEFAULT_SEED = int(os.environ.get("LLADA_SEED", "1234"))
+
 
 def add_gumbel_noise(logits, temperature):
     '''
@@ -324,8 +326,8 @@ def find_dependency_boundary(
     min_block_length: int,
     window_size: int,       # 💡 新增：大探测视野 (比如 128)
     fallback_length: int,   # 💡 新增：找不到时的安全退回长度 (比如 32)
-    spike_multiplier: float = 4.0,
-    relative_ratio: float = 4.0,
+    spike_multiplier: float = 2.0,
+    relative_ratio: float = 3.0,
 ):
     """
     【大视窗前文共识探测】：在更大的 window_size 视野内寻找突刺。
@@ -377,7 +379,7 @@ def find_dependency_boundary(
 
 @torch.no_grad()
 def generate_with_dynamic_dual_cache(
-    model, prompt, steps=128, gen_length=128, init_block_length=64, temperature=0.,
+    model, prompt, steps=128, gen_length=128, init_block_length=16, temperature=0.,
     remasking='low_confidence', mask_id=126336, threshold=None, min_block_length=4,
     enable_dynamic_block=True,
     enable_attn_remask=False
@@ -582,10 +584,17 @@ def generate_with_dynamic_dual_cache(
 # ==============================================================================
 def set_seed(seed):
     torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
     random.seed(seed)
     np.random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+    try:
+        torch.use_deterministic_algorithms(True, warn_only=True)
+    except Exception:
+        pass
 
 @register_model("llada_dist")
 class LLaDAEvalHarness(LM):
@@ -594,9 +603,11 @@ class LLaDAEvalHarness(LM):
         is_check_greedy=True, steps=1024, gen_length=1024, block_length=1024,
         remasking='low_confidence', device="cuda", use_cache=False, threshold=None,
         factor=None, save_dir=None, show_speed=False, dual_cache=False,
-        use_dynamic_block=False, smooth_window=3, **kwargs
+        use_dynamic_block=False, smooth_window=3, seed=DEFAULT_SEED, **kwargs
     ):
         super().__init__()
+        self.seed = int(seed)
+        set_seed(self.seed)
         accelerator = accelerate.Accelerator()
         self.accelerator = accelerator if accelerator.num_processes > 1 else None
 
@@ -858,4 +869,5 @@ class LLaDAEvalHarness(LM):
         return output
 
 if __name__ == "__main__":
+    set_seed(DEFAULT_SEED)
     cli_evaluate()

@@ -392,27 +392,46 @@ def get_transfer_index(
 def find_dependency_boundary(
     avg_attn: torch.Tensor,
     current_s: int,
-    prev_s: int,
+    prefix_start: int,
     min_block_length: int,
-    probe_limit: int,
-    spike_multiplier: float = 4
+    window_size: int,
+    fallback_length: int,
+    spike_multiplier: float = 4.0,
+    relative_ratio: float = 4.0,
 ):
-    if probe_limit <= min_block_length or prev_s >= current_s:
-        return probe_limit
+    if window_size <= min_block_length or prefix_start >= current_s:
+        return min(fallback_length, window_size)
 
-    real_to_mask_attn = avg_attn[prev_s : current_s, current_s : current_s + probe_limit]
-    attention_sum = real_to_mask_attn.mean(dim=0)
-    mu_sum = attention_sum.mean().item()
+    real_to_mask_attn = avg_attn[prefix_start:current_s, current_s: current_s + window_size]
+    if real_to_mask_attn.numel() == 0 or real_to_mask_attn.shape[0] == 0:
+        return min(fallback_length, window_size)
 
-    best_k = probe_limit
-    for k in range(min_block_length, probe_limit):
-        current_sum = attention_sum[k].item()
-        if current_sum > (mu_sum * spike_multiplier):
-            best_k = k+1
-            print(f"    🌟 [前文共识切分] 词 {k} 处切断！全员聚焦锚点 (总关注度 {current_sum:.4f} > 底噪 {mu_sum:.4f} * {spike_multiplier})")
-            break
+    score_bundle = _compute_score_bundle(real_to_mask_attn)
+    attention_scores = score_bundle["combined"]
+    baseline = attention_scores.mean().item()
+    variation = attention_scores.std(unbiased=False).item()
+    absolute_threshold = baseline * spike_multiplier
+    contrast_threshold = baseline + variation
 
-    return best_k
+    for k in range(min_block_length, window_size):
+        current_score = attention_scores[k].item()
+        if current_score <= 0:
+            continue
+
+        left_context = attention_scores[:k]
+        local_baseline = left_context.mean().item() if left_context.numel() > 0 else baseline
+        local_baseline = max(local_baseline, 1e-8)
+
+        if current_score > max(absolute_threshold, contrast_threshold) and current_score / local_baseline >= relative_ratio:
+            best_k = k + 1
+            print(
+                f"    🔭 [混合注意力切分] 视野 {window_size} | 词 {k} 处截断，"
+                f"score={current_score:.4f}, baseline={baseline:.4f}, std={variation:.4f}, "
+                f"local_ratio={current_score / local_baseline:.2f}"
+            )
+            return best_k
+
+    return min(fallback_length, window_size)
 
 @torch.no_grad()
 def generate_with_dynamic_dual_cache(
@@ -433,6 +452,8 @@ def generate_with_dynamic_dual_cache(
     score_history = {"mean": [], "combined": [], "code_combined": []}
     layer_score_history = None
     confirmed_generated_tokens = []
+    warmup_blocks = 2
+    tail_merge_threshold = max(4, min_block_length)
     
     prompt_length = prompt.shape[1]
     prefix_start = 0
@@ -457,6 +478,10 @@ def generate_with_dynamic_dual_cache(
         nfe += 1
         
         probe_limit = min(init_block_length, gen_length - generated_length)
+        remaining_length = gen_length - generated_length
+        window_size = min(int(0.25 * gen_length), remaining_length)
+        fallback_length = min(init_block_length, remaining_length)
+        dynamic_enabled_this_step = enable_dynamic_block and len(block_history) >= warmup_blocks
         
         if len(captured) > 0:
             # 初始化多层追踪列表
@@ -471,10 +496,14 @@ def generate_with_dynamic_dual_cache(
             device = captured[0].device
             I = torch.eye(L_seq, device=device).unsqueeze(0).expand(B, -1, -1)
 
-            # Rollout: 用于指导切分的深层全局判断
             rollout = None
-            num_layers_for_rollout = 5
-            truncated_captured = captured[-num_layers_for_rollout:] if len(captured) > 0 else []
+            selected_layer_indices = [8, 11, 28, 29, 30]
+            truncated_captured = [
+                captured[i] for i in selected_layer_indices
+                if 0 <= i < len(captured)
+            ]
+            if len(truncated_captured) == 0:
+                truncated_captured = captured[-5:] if len(captured) > 0 else []
             
             for W in truncated_captured:
                 A = 0.5 * W + 0.5 * I
@@ -482,28 +511,47 @@ def generate_with_dynamic_dual_cache(
                     rollout = A
                 else:
                     rollout = torch.bmm(A, rollout)
-            avg_attn = rollout[0] 
+            if rollout is None:
+                avg_attn = None
+                block_length = fallback_length
+            else:
+                avg_attn = rollout[0]
 
-            if enable_dynamic_block:
+            if avg_attn is not None and dynamic_enabled_this_step:
                 block_length = find_dependency_boundary(
-                    avg_attn=avg_attn, current_s=current_s, prev_s=max(prefix_start, prompt_length),
-                    min_block_length=min_block_length, probe_limit=probe_limit,
+                    avg_attn=avg_attn,
+                    current_s=current_s,
+                    prefix_start=prefix_start,
+                    min_block_length=min_block_length,
+                    window_size=window_size,
+                    fallback_length=fallback_length,
                 )
             else:
-                block_length = probe_limit
+                block_length = fallback_length
+
+            tail_length = remaining_length - block_length
+            if 0 < tail_length <= tail_merge_threshold:
+                block_length = remaining_length
 
             code_start_idx = _find_code_start_index(confirmed_generated_tokens)
             code_prefix_abs = current_s if code_start_idx is None else prompt_length + code_start_idx
 
             # 1. 记录全局 (Rollout) 的 mean / combined / code-only combined
-            real_to_mask_attn = avg_attn[prefix_start:current_s, current_s : current_s + probe_limit]
-            score_bundle = _compute_score_bundle(real_to_mask_attn)
-            if code_prefix_abs < current_s:
-                code_score_bundle = _compute_score_bundle(
-                    avg_attn[code_prefix_abs:current_s, current_s : current_s + probe_limit]
-                )
-                code_combined_scores = code_score_bundle["combined"]
+            if avg_attn is not None:
+                real_to_mask_attn = avg_attn[prefix_start:current_s, current_s : current_s + probe_limit]
+                score_bundle = _compute_score_bundle(real_to_mask_attn)
+                if code_prefix_abs < current_s:
+                    code_score_bundle = _compute_score_bundle(
+                        avg_attn[code_prefix_abs:current_s, current_s : current_s + probe_limit]
+                    )
+                    code_combined_scores = code_score_bundle["combined"]
+                else:
+                    code_combined_scores = torch.zeros(probe_limit, device=device, dtype=torch.float32)
             else:
+                score_bundle = {
+                    "mean": torch.zeros(probe_limit, device=device, dtype=torch.float32),
+                    "combined": torch.zeros(probe_limit, device=device, dtype=torch.float32),
+                }
                 code_combined_scores = torch.zeros(probe_limit, device=device, dtype=torch.float32)
 
             score_history["mean"].extend(score_bundle["mean"][:block_length].cpu().float().numpy().tolist())
@@ -528,7 +576,7 @@ def generate_with_dynamic_dual_cache(
                 layer_score_history["code_combined"][layer_idx].extend(layer_code_scores[:block_length].cpu().float().numpy().tolist())
                 
         else:
-            block_length = probe_limit 
+            block_length = fallback_length 
 
         block_history.append(block_length)
         block_end = current_s + block_length
