@@ -266,14 +266,66 @@ def visualize_attention_across_layers(captured_attentions, prev_s, current_s, pr
 import torch
 import math
 
+def _sanitize_attention_tensor(values: torch.Tensor) -> torch.Tensor:
+    """Replace NaN/Inf with finite values before scoring."""
+    return torch.nan_to_num(values.float(), nan=0.0, posinf=0.0, neginf=0.0)
+
+
+def compute_dependency_scores(
+    avg_attn: torch.Tensor,
+    prefix_start: int,
+    current_s: int,
+    window_size: int,
+    topk_ratio: float = 0.25,
+    mean_weight: float = 0.2,
+    topk_weight: float = 0.5,
+    max_weight: float = 0.3,
+):
+    """
+    Build a stronger dependency score from the whole confirmed prefix to the current probe window.
+    Returns a dict of per-position statistics for both visualization and boundary search.
+    """
+    if window_size <= 0 or prefix_start >= current_s:
+        return None
+
+    real_to_mask_attn = avg_attn[prefix_start:current_s, current_s: current_s + window_size]
+    if real_to_mask_attn.numel() == 0 or real_to_mask_attn.shape[0] == 0:
+        return None
+
+    real_to_mask_attn = _sanitize_attention_tensor(real_to_mask_attn)
+    mean_scores = real_to_mask_attn.mean(dim=0)
+    max_scores = real_to_mask_attn.max(dim=0).values
+
+    topk_count = max(1, int(math.ceil(real_to_mask_attn.shape[0] * topk_ratio)))
+    topk_scores = torch.topk(real_to_mask_attn, k=topk_count, dim=0).values.mean(dim=0)
+    combined_scores = (
+        mean_weight * mean_scores
+        + topk_weight * topk_scores
+        + max_weight * max_scores
+    )
+
+    combined_scores = _sanitize_attention_tensor(combined_scores)
+    baseline = combined_scores.mean()
+    variation = combined_scores.std(unbiased=False)
+    return {
+        "mean": mean_scores,
+        "topk_mean": topk_scores,
+        "max": max_scores,
+        "combined": combined_scores,
+        "baseline": baseline,
+        "variation": variation,
+    }
+
+
 def find_dependency_boundary(
     avg_attn: torch.Tensor,
     current_s: int,
-    prev_s: int,
+    prefix_start: int,
     min_block_length: int,
     window_size: int,       # 💡 新增：大探测视野 (比如 128)
     fallback_length: int,   # 💡 新增：找不到时的安全退回长度 (比如 32)
-    spike_multiplier: float = 6.0
+    spike_multiplier: float = 4.0,
+    relative_ratio: float = 4.0,
 ):
     """
     【大视窗前文共识探测】：在更大的 window_size 视野内寻找突刺。
@@ -281,24 +333,41 @@ def find_dependency_boundary(
     如果整个视野内都没有突刺，安全退回到 fallback_length。
     """
     # 保护逻辑
-    if window_size <= min_block_length or prev_s >= current_s:
+    if window_size <= min_block_length or prefix_start >= current_s:
         return min(fallback_length, window_size)
 
-    # 1. 提取：前文对【大视窗】内所有 MASK 的注意力
-    real_to_mask_attn = avg_attn[prev_s : current_s, current_s : current_s + window_size]
-    
-    # 2. 沿 Query 求和，算底噪
-    attention_sum = real_to_mask_attn.mean(dim=0)
-    mu_sum = attention_sum.mean().item()
+    score_pack = compute_dependency_scores(
+        avg_attn=avg_attn,
+        prefix_start=prefix_start,
+        current_s=current_s,
+        window_size=window_size,
+    )
+    if score_pack is None:
+        return min(fallback_length, window_size)
+
+    attention_scores = score_pack["combined"]
+    baseline = score_pack["baseline"].item()
+    variation = score_pack["variation"].item()
+    absolute_threshold = baseline * spike_multiplier
+    contrast_threshold = baseline + variation
 
     # 3. 在大视窗内扫描寻找共识突刺
     for k in range(min_block_length, window_size):
-        current_sum = attention_sum[k].item()
-        
-        # 💡 如果找到了强锚点，果断在这里截断！
-        if current_sum > (mu_sum * spike_multiplier):
+        current_score = attention_scores[k].item()
+        if current_score <= 0:
+            continue
+
+        left_context = attention_scores[:k]
+        local_baseline = left_context.mean().item() if left_context.numel() > 0 else baseline
+        local_baseline = max(local_baseline, 1e-8)
+
+        if current_score > max(absolute_threshold, contrast_threshold) and current_score / local_baseline >= relative_ratio:
             best_k = k + 1
-            print(f"    🔭 [大视窗切分] 视野 {window_size} | 词 {k} 处捕获远端锚点，切分长度放大至 {best_k} (关注度 {current_sum:.4f} > 底噪 {mu_sum:.4f} * {spike_multiplier})")
+            print(
+                f"    🔭 [混合注意力切分] 视野 {window_size} | 词 {k} 处截断，"
+                f"score={current_score:.4f}, baseline={baseline:.4f}, std={variation:.4f}, "
+                f"local_ratio={current_score / local_baseline:.2f}"
+            )
             return best_k
 
     # 4. 如果遍历完了整个大视窗都没找到突刺，为了安全，退回 32
@@ -308,7 +377,7 @@ def find_dependency_boundary(
 
 @torch.no_grad()
 def generate_with_dynamic_dual_cache(
-    model, prompt, steps=128, gen_length=128, init_block_length=32, temperature=0.,
+    model, prompt, steps=128, gen_length=128, init_block_length=64, temperature=0.,
     remasking='low_confidence', mask_id=126336, threshold=None, min_block_length=4,
     enable_dynamic_block=True,
     enable_attn_remask=False
@@ -324,9 +393,11 @@ def generate_with_dynamic_dual_cache(
     nfe_history = []  
     block_history = []
     attention_history = []
+    warmup_blocks = 2
+    tail_merge_threshold = max(4, min_block_length)
     
     prompt_length = prompt.shape[1]
-    prev_s = prompt_length 
+    prefix_start = 0
     
     while generated_length < gen_length: 
         nfe = 0
@@ -354,6 +425,7 @@ def generate_with_dynamic_dual_cache(
         window_size = min(int(0.25 * gen_length), remaining_length)
         # 安全退回长度：32
         fallback_length = min(init_block_length, remaining_length)
+        dynamic_enabled_this_step = enable_dynamic_block and len(block_history) >= warmup_blocks
         
         if len(captured) > 0:
             B, L_seq, S_seq = captured[0].shape
@@ -369,9 +441,16 @@ def generate_with_dynamic_dual_cache(
             #     )
 
             rollout = None
-            # 只保留最后几层 attention，避免依赖此前混入 softmax 时的硬编码索引。
-            num_layers_for_rollout = 3
-            truncated_captured = captured[-num_layers_for_rollout:] if len(captured) > 0 else []
+            selected_layer_indices = [8, 11, 28, 29, 30]
+
+            truncated_captured = [
+                captured[i] for i in selected_layer_indices
+                if 0 <= i < len(captured)
+            ]
+
+            if len(truncated_captured) == 0:
+                truncated_captured = captured[-5:] if len(captured) > 0 else []
+
             
             for W in truncated_captured:
                 A = 0.5 * W + 0.5 * I
@@ -386,23 +465,35 @@ def generate_with_dynamic_dual_cache(
                 avg_attn = rollout[0]
 
             # 🚀 3. 动态边界探测 (传入大视窗和退回长度)
-            if avg_attn is not None and enable_dynamic_block:
+            if avg_attn is not None and dynamic_enabled_this_step:
                 block_length = find_dependency_boundary(
                     avg_attn=avg_attn,
                     current_s=current_s,
-                    prev_s=prev_s,
+                    prefix_start=prefix_start,
                     min_block_length=min_block_length,
                     window_size=window_size,         # 传入大视野
                     fallback_length=fallback_length, # 传入安全底线 32
-                    spike_multiplier=4.0
                 )
             else:
                 block_length = fallback_length
 
+            # Avoid creating tiny tail blocks like 1/2 tokens, which add NFE but rarely help quality.
+            tail_length = remaining_length - block_length
+            if 0 < tail_length <= tail_merge_threshold:
+                block_length = remaining_length
+
             if avg_attn is not None:
-                real_to_mask_attn = avg_attn[prev_s : current_s, current_s : current_s + block_length]
-                focus_scores = real_to_mask_attn.sum(dim=0) 
-                attention_history.extend(focus_scores.cpu().float().numpy().tolist())
+                score_pack = compute_dependency_scores(
+                    avg_attn=avg_attn,
+                    prefix_start=prefix_start,
+                    current_s=current_s,
+                    window_size=block_length,
+                )
+                if score_pack is not None:
+                    focus_scores = score_pack["combined"]
+                    attention_history.extend(focus_scores.cpu().float().numpy().tolist())
+                else:
+                    attention_history.extend([0.0] * block_length)
             else:
                 attention_history.extend([0.0] * block_length)
             
@@ -456,8 +547,8 @@ def generate_with_dynamic_dual_cache(
                 
                 B, Q_len, KV_len = smoothed_attn.shape
                 
-                if active_start > prev_s:
-                    local_external_focus = smoothed_attn[:, :, prev_s:active_start].max(dim=-1).values
+                if active_start > prefix_start:
+                    local_external_focus = smoothed_attn[:, :, prefix_start:active_start].max(dim=-1).values
                     
                     internal_start_idx = KV_len - Q_len
                     internal_attn_map = smoothed_attn[:, :, internal_start_idx:] 
@@ -482,7 +573,7 @@ def generate_with_dynamic_dual_cache(
             x[:, active_start:block_end][transfer_index] = x0[transfer_index]
             
         nfe_history.append(nfe)
-        prev_s = active_start 
+        prefix_start = 0
 
     return x, nfe, block_history, attention_history
 
@@ -503,7 +594,7 @@ class LLaDAEvalHarness(LM):
         is_check_greedy=True, steps=1024, gen_length=1024, block_length=1024,
         remasking='low_confidence', device="cuda", use_cache=False, threshold=None,
         factor=None, save_dir=None, show_speed=False, dual_cache=False,
-        use_dynamic_block=False, max_block_length=64, min_block_length=4, smooth_window=3, **kwargs
+        use_dynamic_block=False, smooth_window=3, **kwargs
     ):
         super().__init__()
         accelerator = accelerate.Accelerator()
@@ -552,8 +643,6 @@ class LLaDAEvalHarness(LM):
         self.show_speed = show_speed
         self.dual_cache = dual_cache
         self.use_dynamic_block = use_dynamic_block
-        self.max_block_length = int(max_block_length) 
-        self.min_block_length = int(min_block_length) 
         self.smooth_window = int(smooth_window)
 
     @property
@@ -681,7 +770,7 @@ class LLaDAEvalHarness(LM):
                         generated_answer, nfe, block_boundaries, attn_history = generate_with_dynamic_dual_cache(
                             model=self.model, prompt=input_ids, steps=self.steps, gen_length=self.gen_length,
                             temperature=0, remasking=self.remasking, threshold=self.threshold,
-                            mask_id=self.mask_id,
+                            mask_id=self.mask_id, 
                         )
                     else:
                         generated_answer, nfe = generate_with_dual_cache(

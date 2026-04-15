@@ -1,0 +1,4651 @@
+{
+  "sample_id": 1,
+  "total_tokens": 512,
+  "block_sizes": [
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    25,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    7
+  ],
+  "absolute_cut_positions": [
+    32,
+    64,
+    96,
+    128,
+    160,
+    192,
+    224,
+    249,
+    281,
+    313,
+    345,
+    377,
+    409,
+    441,
+    473,
+    505
+  ],
+  "trajectory": [
+    {
+      "step_index": 0,
+      "mean_score": 0.001469,
+      "combined_score": 0.003351,
+      "code_combined_score": 0.0,
+      "focus_score": 0.003351,
+      "is_cut_point": false,
+      "token": "To"
+    },
+    {
+      "step_index": 1,
+      "mean_score": 0.001548,
+      "combined_score": 0.003083,
+      "code_combined_score": 0.0,
+      "focus_score": 0.003083,
+      "is_cut_point": false,
+      "token": " complete"
+    },
+    {
+      "step_index": 2,
+      "mean_score": 0.000971,
+      "combined_score": 0.001771,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001771,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 3,
+      "mean_score": 0.000758,
+      "combined_score": 0.001478,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001478,
+      "is_cut_point": false,
+      "token": " function"
+    },
+    {
+      "step_index": 4,
+      "mean_score": 0.001016,
+      "combined_score": 0.002062,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002062,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 5,
+      "mean_score": 0.000932,
+      "combined_score": 0.001514,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001514,
+      "is_cut_point": false,
+      "token": "has"
+    },
+    {
+      "step_index": 6,
+      "mean_score": 0.000567,
+      "combined_score": 0.000932,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000932,
+      "is_cut_point": false,
+      "token": "_close"
+    },
+    {
+      "step_index": 7,
+      "mean_score": 0.001181,
+      "combined_score": 0.001786,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001786,
+      "is_cut_point": false,
+      "token": "_elements"
+    },
+    {
+      "step_index": 8,
+      "mean_score": 0.000545,
+      "combined_score": 0.000843,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000843,
+      "is_cut_point": false,
+      "token": "`"
+    },
+    {
+      "step_index": 9,
+      "mean_score": 0.000514,
+      "combined_score": 0.000788,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000788,
+      "is_cut_point": false,
+      "token": " and"
+    },
+    {
+      "step_index": 10,
+      "mean_score": 0.000392,
+      "combined_score": 0.000587,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000587,
+      "is_cut_point": false,
+      "token": " ensure"
+    },
+    {
+      "step_index": 11,
+      "mean_score": 0.000548,
+      "combined_score": 0.000832,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000832,
+      "is_cut_point": false,
+      "token": " it"
+    },
+    {
+      "step_index": 12,
+      "mean_score": 0.000495,
+      "combined_score": 0.000728,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000728,
+      "is_cut_point": false,
+      "token": " works"
+    },
+    {
+      "step_index": 13,
+      "mean_score": 0.000596,
+      "combined_score": 0.000894,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000894,
+      "is_cut_point": false,
+      "token": " correctly"
+    },
+    {
+      "step_index": 14,
+      "mean_score": 0.000485,
+      "combined_score": 0.000705,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000705,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 15,
+      "mean_score": 0.000451,
+      "combined_score": 0.000662,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000662,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 16,
+      "mean_score": 0.00042,
+      "combined_score": 0.00063,
+      "code_combined_score": 0.0,
+      "focus_score": 0.00063,
+      "is_cut_point": false,
+      "token": " need"
+    },
+    {
+      "step_index": 17,
+      "mean_score": 0.000289,
+      "combined_score": 0.000431,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000431,
+      "is_cut_point": false,
+      "token": " to"
+    },
+    {
+      "step_index": 18,
+      "mean_score": 0.000929,
+      "combined_score": 0.001295,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001295,
+      "is_cut_point": false,
+      "token": " iterate"
+    },
+    {
+      "step_index": 19,
+      "mean_score": 0.001085,
+      "combined_score": 0.001751,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001751,
+      "is_cut_point": false,
+      "token": " through"
+    },
+    {
+      "step_index": 20,
+      "mean_score": 0.000259,
+      "combined_score": 0.000368,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000368,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 21,
+      "mean_score": 0.000248,
+      "combined_score": 0.000346,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000346,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 22,
+      "mean_score": 0.000315,
+      "combined_score": 0.000428,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000428,
+      "is_cut_point": false,
+      "token": " of"
+    },
+    {
+      "step_index": 23,
+      "mean_score": 0.001962,
+      "combined_score": 0.002988,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002988,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 24,
+      "mean_score": 0.000531,
+      "combined_score": 0.000724,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000724,
+      "is_cut_point": false,
+      "token": " and"
+    },
+    {
+      "step_index": 25,
+      "mean_score": 0.000471,
+      "combined_score": 0.000649,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000649,
+      "is_cut_point": false,
+      "token": " check"
+    },
+    {
+      "step_index": 26,
+      "mean_score": 0.000697,
+      "combined_score": 0.000945,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000945,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 27,
+      "mean_score": 0.000364,
+      "combined_score": 0.000495,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000495,
+      "is_cut_point": false,
+      "token": " any"
+    },
+    {
+      "step_index": 28,
+      "mean_score": 0.000472,
+      "combined_score": 0.000616,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000616,
+      "is_cut_point": false,
+      "token": " two"
+    },
+    {
+      "step_index": 29,
+      "mean_score": 0.000283,
+      "combined_score": 0.000388,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000388,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 30,
+      "mean_score": 0.000364,
+      "combined_score": 0.000485,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000485,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 31,
+      "mean_score": 0.000895,
+      "combined_score": 0.001222,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001222,
+      "is_cut_point": false,
+      "token": " closer"
+    },
+    {
+      "step_index": 32,
+      "mean_score": 0.000802,
+      "combined_score": 0.003718,
+      "code_combined_score": 0.0,
+      "focus_score": 0.003718,
+      "is_cut_point": true,
+      "token": " to"
+    },
+    {
+      "step_index": 33,
+      "mean_score": 0.000669,
+      "combined_score": 0.002539,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002539,
+      "is_cut_point": false,
+      "token": " each"
+    },
+    {
+      "step_index": 34,
+      "mean_score": 0.000931,
+      "combined_score": 0.002413,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002413,
+      "is_cut_point": false,
+      "token": " other"
+    },
+    {
+      "step_index": 35,
+      "mean_score": 0.000805,
+      "combined_score": 0.002563,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002563,
+      "is_cut_point": false,
+      "token": " than"
+    },
+    {
+      "step_index": 36,
+      "mean_score": 0.000847,
+      "combined_score": 0.002262,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002262,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 37,
+      "mean_score": 0.001569,
+      "combined_score": 0.003147,
+      "code_combined_score": 0.0,
+      "focus_score": 0.003147,
+      "is_cut_point": false,
+      "token": " given"
+    },
+    {
+      "step_index": 38,
+      "mean_score": 0.001152,
+      "combined_score": 0.002048,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002048,
+      "is_cut_point": false,
+      "token": " threshold"
+    },
+    {
+      "step_index": 39,
+      "mean_score": 0.000803,
+      "combined_score": 0.001412,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001412,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 40,
+      "mean_score": 0.001066,
+      "combined_score": 0.001935,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001935,
+      "is_cut_point": false,
+      "token": " Here"
+    },
+    {
+      "step_index": 41,
+      "mean_score": 0.000842,
+      "combined_score": 0.001619,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001619,
+      "is_cut_point": false,
+      "token": "'s"
+    },
+    {
+      "step_index": 42,
+      "mean_score": 0.000603,
+      "combined_score": 0.001147,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001147,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 43,
+      "mean_score": 0.001287,
+      "combined_score": 0.002964,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002964,
+      "is_cut_point": false,
+      "token": " complete"
+    },
+    {
+      "step_index": 44,
+      "mean_score": 0.000651,
+      "combined_score": 0.001189,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001189,
+      "is_cut_point": false,
+      "token": " implementation"
+    },
+    {
+      "step_index": 45,
+      "mean_score": 0.000579,
+      "combined_score": 0.001118,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001118,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 46,
+      "mean_score": 0.001048,
+      "combined_score": 0.002279,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002279,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 47,
+      "mean_score": 0.001184,
+      "combined_score": 0.002013,
+      "code_combined_score": 0.0,
+      "focus_score": 0.002013,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 48,
+      "mean_score": 0.001033,
+      "combined_score": 0.001748,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001748,
+      "is_cut_point": false,
+      "token": "```"
+    },
+    {
+      "step_index": 49,
+      "mean_score": 0.000643,
+      "combined_score": 0.001114,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001114,
+      "is_cut_point": false,
+      "token": "python"
+    },
+    {
+      "step_index": 50,
+      "mean_score": 0.000521,
+      "combined_score": 0.000845,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000845,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 51,
+      "mean_score": 0.000859,
+      "combined_score": 0.001369,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001369,
+      "is_cut_point": false,
+      "token": "from"
+    },
+    {
+      "step_index": 52,
+      "mean_score": 0.00074,
+      "combined_score": 0.001991,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001991,
+      "is_cut_point": false,
+      "token": " typing"
+    },
+    {
+      "step_index": 53,
+      "mean_score": 0.000574,
+      "combined_score": 0.001261,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001261,
+      "is_cut_point": false,
+      "token": " import"
+    },
+    {
+      "step_index": 54,
+      "mean_score": 0.000349,
+      "combined_score": 0.000591,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000591,
+      "is_cut_point": false,
+      "token": " List"
+    },
+    {
+      "step_index": 55,
+      "mean_score": 0.000406,
+      "combined_score": 0.000826,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000826,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 56,
+      "mean_score": 0.000396,
+      "combined_score": 0.000691,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000691,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 57,
+      "mean_score": 0.000434,
+      "combined_score": 0.000935,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000935,
+      "is_cut_point": false,
+      "token": "def"
+    },
+    {
+      "step_index": 58,
+      "mean_score": 0.000521,
+      "combined_score": 0.001018,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001018,
+      "is_cut_point": false,
+      "token": " has"
+    },
+    {
+      "step_index": 59,
+      "mean_score": 0.000378,
+      "combined_score": 0.000655,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000655,
+      "is_cut_point": false,
+      "token": "_close"
+    },
+    {
+      "step_index": 60,
+      "mean_score": 0.000799,
+      "combined_score": 0.001254,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001254,
+      "is_cut_point": false,
+      "token": "_elements"
+    },
+    {
+      "step_index": 61,
+      "mean_score": 0.000373,
+      "combined_score": 0.000645,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000645,
+      "is_cut_point": false,
+      "token": "(n"
+    },
+    {
+      "step_index": 62,
+      "mean_score": 0.00085,
+      "combined_score": 0.001292,
+      "code_combined_score": 0.0,
+      "focus_score": 0.001292,
+      "is_cut_point": false,
+      "token": "umbers"
+    },
+    {
+      "step_index": 63,
+      "mean_score": 0.000341,
+      "combined_score": 0.000673,
+      "code_combined_score": 0.0,
+      "focus_score": 0.000673,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 64,
+      "mean_score": 0.000614,
+      "combined_score": 0.003159,
+      "code_combined_score": 0.004549,
+      "focus_score": 0.003159,
+      "is_cut_point": true,
+      "token": " List"
+    },
+    {
+      "step_index": 65,
+      "mean_score": 0.000626,
+      "combined_score": 0.001932,
+      "code_combined_score": 0.00256,
+      "focus_score": 0.001932,
+      "is_cut_point": false,
+      "token": "["
+    },
+    {
+      "step_index": 66,
+      "mean_score": 0.000712,
+      "combined_score": 0.00189,
+      "code_combined_score": 0.002266,
+      "focus_score": 0.00189,
+      "is_cut_point": false,
+      "token": "float"
+    },
+    {
+      "step_index": 67,
+      "mean_score": 0.000572,
+      "combined_score": 0.001603,
+      "code_combined_score": 0.002129,
+      "focus_score": 0.001603,
+      "is_cut_point": false,
+      "token": "],"
+    },
+    {
+      "step_index": 68,
+      "mean_score": 0.000924,
+      "combined_score": 0.001909,
+      "code_combined_score": 0.001915,
+      "focus_score": 0.001909,
+      "is_cut_point": false,
+      "token": " threshold"
+    },
+    {
+      "step_index": 69,
+      "mean_score": 0.000362,
+      "combined_score": 0.001783,
+      "code_combined_score": 0.001279,
+      "focus_score": 0.001783,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 70,
+      "mean_score": 0.00043,
+      "combined_score": 0.001552,
+      "code_combined_score": 0.000924,
+      "focus_score": 0.001552,
+      "is_cut_point": false,
+      "token": " float"
+    },
+    {
+      "step_index": 71,
+      "mean_score": 0.000501,
+      "combined_score": 0.002629,
+      "code_combined_score": 0.001052,
+      "focus_score": 0.002629,
+      "is_cut_point": false,
+      "token": ")"
+    },
+    {
+      "step_index": 72,
+      "mean_score": 0.00037,
+      "combined_score": 0.001395,
+      "code_combined_score": 0.001031,
+      "focus_score": 0.001395,
+      "is_cut_point": false,
+      "token": " ->"
+    },
+    {
+      "step_index": 73,
+      "mean_score": 0.000423,
+      "combined_score": 0.002385,
+      "code_combined_score": 0.000837,
+      "focus_score": 0.002385,
+      "is_cut_point": false,
+      "token": " bool"
+    },
+    {
+      "step_index": 74,
+      "mean_score": 0.000475,
+      "combined_score": 0.002215,
+      "code_combined_score": 0.000828,
+      "focus_score": 0.002215,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 75,
+      "mean_score": 0.000582,
+      "combined_score": 0.001308,
+      "code_combined_score": 0.00091,
+      "focus_score": 0.001308,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 76,
+      "mean_score": 0.000645,
+      "combined_score": 0.002154,
+      "code_combined_score": 0.001109,
+      "focus_score": 0.002154,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 77,
+      "mean_score": 0.000769,
+      "combined_score": 0.003012,
+      "code_combined_score": 0.001271,
+      "focus_score": 0.003012,
+      "is_cut_point": false,
+      "token": " \"\"\""
+    },
+    {
+      "step_index": 78,
+      "mean_score": 0.001116,
+      "combined_score": 0.004196,
+      "code_combined_score": 0.001491,
+      "focus_score": 0.004196,
+      "is_cut_point": false,
+      "token": " Check"
+    },
+    {
+      "step_index": 79,
+      "mean_score": 0.000632,
+      "combined_score": 0.002968,
+      "code_combined_score": 0.00074,
+      "focus_score": 0.002968,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 80,
+      "mean_score": 0.000567,
+      "combined_score": 0.003369,
+      "code_combined_score": 0.000589,
+      "focus_score": 0.003369,
+      "is_cut_point": false,
+      "token": " in"
+    },
+    {
+      "step_index": 81,
+      "mean_score": 0.000539,
+      "combined_score": 0.002797,
+      "code_combined_score": 0.000567,
+      "focus_score": 0.002797,
+      "is_cut_point": false,
+      "token": " given"
+    },
+    {
+      "step_index": 82,
+      "mean_score": 0.000498,
+      "combined_score": 0.002049,
+      "code_combined_score": 0.000536,
+      "focus_score": 0.002049,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 83,
+      "mean_score": 0.000425,
+      "combined_score": 0.002089,
+      "code_combined_score": 0.000463,
+      "focus_score": 0.002089,
+      "is_cut_point": false,
+      "token": " of"
+    },
+    {
+      "step_index": 84,
+      "mean_score": 0.000351,
+      "combined_score": 0.001394,
+      "code_combined_score": 0.000421,
+      "focus_score": 0.001394,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 85,
+      "mean_score": 0.000541,
+      "combined_score": 0.002171,
+      "code_combined_score": 0.000593,
+      "focus_score": 0.002171,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 86,
+      "mean_score": 0.000393,
+      "combined_score": 0.002188,
+      "code_combined_score": 0.000393,
+      "focus_score": 0.002188,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 87,
+      "mean_score": 0.000337,
+      "combined_score": 0.001551,
+      "code_combined_score": 0.000358,
+      "focus_score": 0.001551,
+      "is_cut_point": false,
+      "token": " any"
+    },
+    {
+      "step_index": 88,
+      "mean_score": 0.000446,
+      "combined_score": 0.002189,
+      "code_combined_score": 0.000444,
+      "focus_score": 0.002189,
+      "is_cut_point": false,
+      "token": " two"
+    },
+    {
+      "step_index": 89,
+      "mean_score": 0.000434,
+      "combined_score": 0.002081,
+      "code_combined_score": 0.000458,
+      "focus_score": 0.002081,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 90,
+      "mean_score": 0.000425,
+      "combined_score": 0.001803,
+      "code_combined_score": 0.000446,
+      "focus_score": 0.001803,
+      "is_cut_point": false,
+      "token": " closer"
+    },
+    {
+      "step_index": 91,
+      "mean_score": 0.000305,
+      "combined_score": 0.000978,
+      "code_combined_score": 0.000331,
+      "focus_score": 0.000978,
+      "is_cut_point": false,
+      "token": " to"
+    },
+    {
+      "step_index": 92,
+      "mean_score": 0.000327,
+      "combined_score": 0.001189,
+      "code_combined_score": 0.000346,
+      "focus_score": 0.001189,
+      "is_cut_point": false,
+      "token": " each"
+    },
+    {
+      "step_index": 93,
+      "mean_score": 0.000379,
+      "combined_score": 0.00195,
+      "code_combined_score": 0.0004,
+      "focus_score": 0.00195,
+      "is_cut_point": false,
+      "token": " other"
+    },
+    {
+      "step_index": 94,
+      "mean_score": 0.000599,
+      "combined_score": 0.002817,
+      "code_combined_score": 0.000603,
+      "focus_score": 0.002817,
+      "is_cut_point": false,
+      "token": " than"
+    },
+    {
+      "step_index": 95,
+      "mean_score": 0.000527,
+      "combined_score": 0.003111,
+      "code_combined_score": 0.000503,
+      "focus_score": 0.003111,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 96,
+      "mean_score": 0.00067,
+      "combined_score": 0.003944,
+      "code_combined_score": 0.003873,
+      "focus_score": 0.003944,
+      "is_cut_point": true,
+      "token": "   "
+    },
+    {
+      "step_index": 97,
+      "mean_score": 0.000649,
+      "combined_score": 0.002943,
+      "code_combined_score": 0.003619,
+      "focus_score": 0.002943,
+      "is_cut_point": false,
+      "token": " given"
+    },
+    {
+      "step_index": 98,
+      "mean_score": 0.000659,
+      "combined_score": 0.002691,
+      "code_combined_score": 0.002869,
+      "focus_score": 0.002691,
+      "is_cut_point": false,
+      "token": " threshold"
+    },
+    {
+      "step_index": 99,
+      "mean_score": 0.000791,
+      "combined_score": 0.002749,
+      "code_combined_score": 0.002127,
+      "focus_score": 0.002749,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 100,
+      "mean_score": 0.000638,
+      "combined_score": 0.002726,
+      "code_combined_score": 0.001528,
+      "focus_score": 0.002726,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 101,
+      "mean_score": 0.000932,
+      "combined_score": 0.002898,
+      "code_combined_score": 0.00239,
+      "focus_score": 0.002898,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 102,
+      "mean_score": 0.000755,
+      "combined_score": 0.001631,
+      "code_combined_score": 0.001624,
+      "focus_score": 0.001631,
+      "is_cut_point": false,
+      "token": " >>>"
+    },
+    {
+      "step_index": 103,
+      "mean_score": 0.000548,
+      "combined_score": 0.000895,
+      "code_combined_score": 0.000839,
+      "focus_score": 0.000895,
+      "is_cut_point": false,
+      "token": " has"
+    },
+    {
+      "step_index": 104,
+      "mean_score": 0.000955,
+      "combined_score": 0.00156,
+      "code_combined_score": 0.001461,
+      "focus_score": 0.00156,
+      "is_cut_point": false,
+      "token": "_close"
+    },
+    {
+      "step_index": 105,
+      "mean_score": 0.000442,
+      "combined_score": 0.000827,
+      "code_combined_score": 0.000628,
+      "focus_score": 0.000827,
+      "is_cut_point": false,
+      "token": "_elements"
+    },
+    {
+      "step_index": 106,
+      "mean_score": 0.000512,
+      "combined_score": 0.001115,
+      "code_combined_score": 0.000663,
+      "focus_score": 0.001115,
+      "is_cut_point": false,
+      "token": "(["
+    },
+    {
+      "step_index": 107,
+      "mean_score": 0.000449,
+      "combined_score": 0.001812,
+      "code_combined_score": 0.000537,
+      "focus_score": 0.001812,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 108,
+      "mean_score": 0.000307,
+      "combined_score": 0.000845,
+      "code_combined_score": 0.000357,
+      "focus_score": 0.000845,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 109,
+      "mean_score": 0.0003,
+      "combined_score": 0.001073,
+      "code_combined_score": 0.000353,
+      "focus_score": 0.001073,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 110,
+      "mean_score": 0.00033,
+      "combined_score": 0.000995,
+      "code_combined_score": 0.000377,
+      "focus_score": 0.000995,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 111,
+      "mean_score": 0.000268,
+      "combined_score": 0.001144,
+      "code_combined_score": 0.000291,
+      "focus_score": 0.001144,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 112,
+      "mean_score": 0.000279,
+      "combined_score": 0.001536,
+      "code_combined_score": 0.000315,
+      "focus_score": 0.001536,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 113,
+      "mean_score": 0.000212,
+      "combined_score": 0.000798,
+      "code_combined_score": 0.000238,
+      "focus_score": 0.000798,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 114,
+      "mean_score": 0.000309,
+      "combined_score": 0.001369,
+      "code_combined_score": 0.000362,
+      "focus_score": 0.001369,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 115,
+      "mean_score": 0.000243,
+      "combined_score": 0.00064,
+      "code_combined_score": 0.000294,
+      "focus_score": 0.00064,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 116,
+      "mean_score": 0.000311,
+      "combined_score": 0.001217,
+      "code_combined_score": 0.000387,
+      "focus_score": 0.001217,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 117,
+      "mean_score": 0.000313,
+      "combined_score": 0.001538,
+      "code_combined_score": 0.000353,
+      "focus_score": 0.001538,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 118,
+      "mean_score": 0.000433,
+      "combined_score": 0.001677,
+      "code_combined_score": 0.000517,
+      "focus_score": 0.001677,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 119,
+      "mean_score": 0.000261,
+      "combined_score": 0.001356,
+      "code_combined_score": 0.00029,
+      "focus_score": 0.001356,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 120,
+      "mean_score": 0.000326,
+      "combined_score": 0.001035,
+      "code_combined_score": 0.000396,
+      "focus_score": 0.001035,
+      "is_cut_point": false,
+      "token": "],"
+    },
+    {
+      "step_index": 121,
+      "mean_score": 0.000268,
+      "combined_score": 0.001026,
+      "code_combined_score": 0.000337,
+      "focus_score": 0.001026,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 122,
+      "mean_score": 0.000314,
+      "combined_score": 0.001384,
+      "code_combined_score": 0.000392,
+      "focus_score": 0.001384,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 123,
+      "mean_score": 0.00064,
+      "combined_score": 0.001693,
+      "code_combined_score": 0.000832,
+      "focus_score": 0.001693,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 124,
+      "mean_score": 0.000425,
+      "combined_score": 0.002249,
+      "code_combined_score": 0.000482,
+      "focus_score": 0.002249,
+      "is_cut_point": false,
+      "token": "5"
+    },
+    {
+      "step_index": 125,
+      "mean_score": 0.000364,
+      "combined_score": 0.001693,
+      "code_combined_score": 0.000422,
+      "focus_score": 0.001693,
+      "is_cut_point": false,
+      "token": ")"
+    },
+    {
+      "step_index": 126,
+      "mean_score": 0.000347,
+      "combined_score": 0.001002,
+      "code_combined_score": 0.000429,
+      "focus_score": 0.001002,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 127,
+      "mean_score": 0.000492,
+      "combined_score": 0.001628,
+      "code_combined_score": 0.000712,
+      "focus_score": 0.001628,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 128,
+      "mean_score": 0.001096,
+      "combined_score": 0.003687,
+      "code_combined_score": 0.004234,
+      "focus_score": 0.003687,
+      "is_cut_point": true,
+      "token": " False"
+    },
+    {
+      "step_index": 129,
+      "mean_score": 0.000698,
+      "combined_score": 0.001824,
+      "code_combined_score": 0.002071,
+      "focus_score": 0.001824,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 130,
+      "mean_score": 0.000402,
+      "combined_score": 0.001691,
+      "code_combined_score": 0.001504,
+      "focus_score": 0.001691,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 131,
+      "mean_score": 0.000573,
+      "combined_score": 0.001685,
+      "code_combined_score": 0.001866,
+      "focus_score": 0.001685,
+      "is_cut_point": false,
+      "token": " >>>"
+    },
+    {
+      "step_index": 132,
+      "mean_score": 0.000428,
+      "combined_score": 0.000917,
+      "code_combined_score": 0.000878,
+      "focus_score": 0.000917,
+      "is_cut_point": false,
+      "token": " has"
+    },
+    {
+      "step_index": 133,
+      "mean_score": 0.000376,
+      "combined_score": 0.00089,
+      "code_combined_score": 0.000794,
+      "focus_score": 0.00089,
+      "is_cut_point": false,
+      "token": "_close"
+    },
+    {
+      "step_index": 134,
+      "mean_score": 0.00044,
+      "combined_score": 0.001225,
+      "code_combined_score": 0.001088,
+      "focus_score": 0.001225,
+      "is_cut_point": false,
+      "token": "_elements"
+    },
+    {
+      "step_index": 135,
+      "mean_score": 0.000684,
+      "combined_score": 0.002143,
+      "code_combined_score": 0.001818,
+      "focus_score": 0.002143,
+      "is_cut_point": false,
+      "token": "(["
+    },
+    {
+      "step_index": 136,
+      "mean_score": 0.000498,
+      "combined_score": 0.002285,
+      "code_combined_score": 0.001316,
+      "focus_score": 0.002285,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 137,
+      "mean_score": 0.000338,
+      "combined_score": 0.001324,
+      "code_combined_score": 0.000705,
+      "focus_score": 0.001324,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 138,
+      "mean_score": 0.000313,
+      "combined_score": 0.001858,
+      "code_combined_score": 0.000793,
+      "focus_score": 0.001858,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 139,
+      "mean_score": 0.000305,
+      "combined_score": 0.001049,
+      "code_combined_score": 0.000511,
+      "focus_score": 0.001049,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 140,
+      "mean_score": 0.00029,
+      "combined_score": 0.001262,
+      "code_combined_score": 0.000465,
+      "focus_score": 0.001262,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 141,
+      "mean_score": 0.000374,
+      "combined_score": 0.00261,
+      "code_combined_score": 0.000804,
+      "focus_score": 0.00261,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 142,
+      "mean_score": 0.000266,
+      "combined_score": 0.001498,
+      "code_combined_score": 0.000417,
+      "focus_score": 0.001498,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 143,
+      "mean_score": 0.000455,
+      "combined_score": 0.002683,
+      "code_combined_score": 0.000985,
+      "focus_score": 0.002683,
+      "is_cut_point": false,
+      "token": "8"
+    },
+    {
+      "step_index": 144,
+      "mean_score": 0.00032,
+      "combined_score": 0.001068,
+      "code_combined_score": 0.000463,
+      "focus_score": 0.001068,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 145,
+      "mean_score": 0.000219,
+      "combined_score": 0.00108,
+      "code_combined_score": 0.000331,
+      "focus_score": 0.00108,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 146,
+      "mean_score": 0.000265,
+      "combined_score": 0.001617,
+      "code_combined_score": 0.000569,
+      "focus_score": 0.001617,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 147,
+      "mean_score": 0.000173,
+      "combined_score": 0.000831,
+      "code_combined_score": 0.000289,
+      "focus_score": 0.000831,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 148,
+      "mean_score": 0.000212,
+      "combined_score": 0.001409,
+      "code_combined_score": 0.000371,
+      "focus_score": 0.001409,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 149,
+      "mean_score": 0.000234,
+      "combined_score": 0.001132,
+      "code_combined_score": 0.00032,
+      "focus_score": 0.001132,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 150,
+      "mean_score": 0.000175,
+      "combined_score": 0.000753,
+      "code_combined_score": 0.000232,
+      "focus_score": 0.000753,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 151,
+      "mean_score": 0.000277,
+      "combined_score": 0.001575,
+      "code_combined_score": 0.000477,
+      "focus_score": 0.001575,
+      "is_cut_point": false,
+      "token": "4"
+    },
+    {
+      "step_index": 152,
+      "mean_score": 0.000253,
+      "combined_score": 0.001073,
+      "code_combined_score": 0.000371,
+      "focus_score": 0.001073,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 153,
+      "mean_score": 0.000199,
+      "combined_score": 0.001464,
+      "code_combined_score": 0.000262,
+      "focus_score": 0.001464,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 154,
+      "mean_score": 0.000211,
+      "combined_score": 0.00104,
+      "code_combined_score": 0.000243,
+      "focus_score": 0.00104,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 155,
+      "mean_score": 0.00018,
+      "combined_score": 0.000952,
+      "code_combined_score": 0.000205,
+      "focus_score": 0.000952,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 156,
+      "mean_score": 0.000279,
+      "combined_score": 0.001682,
+      "code_combined_score": 0.000343,
+      "focus_score": 0.001682,
+      "is_cut_point": false,
+      "token": "5"
+    },
+    {
+      "step_index": 157,
+      "mean_score": 0.000181,
+      "combined_score": 0.000986,
+      "code_combined_score": 0.000211,
+      "focus_score": 0.000986,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 158,
+      "mean_score": 0.00022,
+      "combined_score": 0.001658,
+      "code_combined_score": 0.000257,
+      "focus_score": 0.001658,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 159,
+      "mean_score": 0.000208,
+      "combined_score": 0.000975,
+      "code_combined_score": 0.000234,
+      "focus_score": 0.000975,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 160,
+      "mean_score": 0.000753,
+      "combined_score": 0.001466,
+      "code_combined_score": 0.001604,
+      "focus_score": 0.001466,
+      "is_cut_point": true,
+      "token": " "
+    },
+    {
+      "step_index": 161,
+      "mean_score": 0.000675,
+      "combined_score": 0.003,
+      "code_combined_score": 0.002836,
+      "focus_score": 0.003,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 162,
+      "mean_score": 0.000472,
+      "combined_score": 0.002023,
+      "code_combined_score": 0.001275,
+      "focus_score": 0.002023,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 163,
+      "mean_score": 0.000438,
+      "combined_score": 0.002046,
+      "code_combined_score": 0.001568,
+      "focus_score": 0.002046,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 164,
+      "mean_score": 0.000581,
+      "combined_score": 0.001626,
+      "code_combined_score": 0.001774,
+      "focus_score": 0.001626,
+      "is_cut_point": false,
+      "token": "],"
+    },
+    {
+      "step_index": 165,
+      "mean_score": 0.000457,
+      "combined_score": 0.002172,
+      "code_combined_score": 0.000961,
+      "focus_score": 0.002172,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 166,
+      "mean_score": 0.000418,
+      "combined_score": 0.003223,
+      "code_combined_score": 0.001016,
+      "focus_score": 0.003223,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 167,
+      "mean_score": 0.000379,
+      "combined_score": 0.002478,
+      "code_combined_score": 0.000873,
+      "focus_score": 0.002478,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 168,
+      "mean_score": 0.000526,
+      "combined_score": 0.003016,
+      "code_combined_score": 0.001511,
+      "focus_score": 0.003016,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 169,
+      "mean_score": 0.000658,
+      "combined_score": 0.002296,
+      "code_combined_score": 0.001736,
+      "focus_score": 0.002296,
+      "is_cut_point": false,
+      "token": ")"
+    },
+    {
+      "step_index": 170,
+      "mean_score": 0.000476,
+      "combined_score": 0.00151,
+      "code_combined_score": 0.00158,
+      "focus_score": 0.00151,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 171,
+      "mean_score": 0.000383,
+      "combined_score": 0.001581,
+      "code_combined_score": 0.0015,
+      "focus_score": 0.001581,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 172,
+      "mean_score": 0.000563,
+      "combined_score": 0.001642,
+      "code_combined_score": 0.001534,
+      "focus_score": 0.001642,
+      "is_cut_point": false,
+      "token": " True"
+    },
+    {
+      "step_index": 173,
+      "mean_score": 0.000654,
+      "combined_score": 0.001275,
+      "code_combined_score": 0.001278,
+      "focus_score": 0.001275,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 174,
+      "mean_score": 0.000599,
+      "combined_score": 0.001592,
+      "code_combined_score": 0.00136,
+      "focus_score": 0.001592,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 175,
+      "mean_score": 0.000701,
+      "combined_score": 0.001559,
+      "code_combined_score": 0.001502,
+      "focus_score": 0.001559,
+      "is_cut_point": false,
+      "token": " \"\"\""
+    },
+    {
+      "step_index": 176,
+      "mean_score": 0.000707,
+      "combined_score": 0.001056,
+      "code_combined_score": 0.001117,
+      "focus_score": 0.001056,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 177,
+      "mean_score": 0.000721,
+      "combined_score": 0.001187,
+      "code_combined_score": 0.001279,
+      "focus_score": 0.001187,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 178,
+      "mean_score": 0.001096,
+      "combined_score": 0.001658,
+      "code_combined_score": 0.001845,
+      "focus_score": 0.001658,
+      "is_cut_point": false,
+      "token": " sorted"
+    },
+    {
+      "step_index": 179,
+      "mean_score": 0.000663,
+      "combined_score": 0.001117,
+      "code_combined_score": 0.001224,
+      "focus_score": 0.001117,
+      "is_cut_point": false,
+      "token": "_numbers"
+    },
+    {
+      "step_index": 180,
+      "mean_score": 0.00091,
+      "combined_score": 0.001792,
+      "code_combined_score": 0.001948,
+      "focus_score": 0.001792,
+      "is_cut_point": false,
+      "token": " ="
+    },
+    {
+      "step_index": 181,
+      "mean_score": 0.00061,
+      "combined_score": 0.001054,
+      "code_combined_score": 0.001134,
+      "focus_score": 0.001054,
+      "is_cut_point": false,
+      "token": " sorted"
+    },
+    {
+      "step_index": 182,
+      "mean_score": 0.000776,
+      "combined_score": 0.001304,
+      "code_combined_score": 0.001413,
+      "focus_score": 0.001304,
+      "is_cut_point": false,
+      "token": "(n"
+    },
+    {
+      "step_index": 183,
+      "mean_score": 0.001031,
+      "combined_score": 0.001752,
+      "code_combined_score": 0.001884,
+      "focus_score": 0.001752,
+      "is_cut_point": false,
+      "token": "umbers"
+    },
+    {
+      "step_index": 184,
+      "mean_score": 0.000487,
+      "combined_score": 0.00076,
+      "code_combined_score": 0.000821,
+      "focus_score": 0.00076,
+      "is_cut_point": false,
+      "token": ")"
+    },
+    {
+      "step_index": 185,
+      "mean_score": 0.000697,
+      "combined_score": 0.001035,
+      "code_combined_score": 0.001121,
+      "focus_score": 0.001035,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 186,
+      "mean_score": 0.00052,
+      "combined_score": 0.000813,
+      "code_combined_score": 0.000887,
+      "focus_score": 0.000813,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 187,
+      "mean_score": 0.001027,
+      "combined_score": 0.001552,
+      "code_combined_score": 0.001669,
+      "focus_score": 0.001552,
+      "is_cut_point": false,
+      "token": " for"
+    },
+    {
+      "step_index": 188,
+      "mean_score": 0.000267,
+      "combined_score": 0.00039,
+      "code_combined_score": 0.000419,
+      "focus_score": 0.00039,
+      "is_cut_point": false,
+      "token": " i"
+    },
+    {
+      "step_index": 189,
+      "mean_score": 0.000391,
+      "combined_score": 0.000657,
+      "code_combined_score": 0.000714,
+      "focus_score": 0.000657,
+      "is_cut_point": false,
+      "token": " in"
+    },
+    {
+      "step_index": 190,
+      "mean_score": 0.000305,
+      "combined_score": 0.000562,
+      "code_combined_score": 0.000613,
+      "focus_score": 0.000562,
+      "is_cut_point": false,
+      "token": " range"
+    },
+    {
+      "step_index": 191,
+      "mean_score": 0.000379,
+      "combined_score": 0.000638,
+      "code_combined_score": 0.000691,
+      "focus_score": 0.000638,
+      "is_cut_point": false,
+      "token": "(len"
+    },
+    {
+      "step_index": 192,
+      "mean_score": 0.000848,
+      "combined_score": 0.003356,
+      "code_combined_score": 0.00368,
+      "focus_score": 0.003356,
+      "is_cut_point": true,
+      "token": "(sorted"
+    },
+    {
+      "step_index": 193,
+      "mean_score": 0.000746,
+      "combined_score": 0.002361,
+      "code_combined_score": 0.002612,
+      "focus_score": 0.002361,
+      "is_cut_point": false,
+      "token": "_numbers"
+    },
+    {
+      "step_index": 194,
+      "mean_score": 0.000604,
+      "combined_score": 0.002154,
+      "code_combined_score": 0.002358,
+      "focus_score": 0.002154,
+      "is_cut_point": false,
+      "token": ")"
+    },
+    {
+      "step_index": 195,
+      "mean_score": 0.000697,
+      "combined_score": 0.00212,
+      "code_combined_score": 0.002345,
+      "focus_score": 0.00212,
+      "is_cut_point": false,
+      "token": " -"
+    },
+    {
+      "step_index": 196,
+      "mean_score": 0.000629,
+      "combined_score": 0.001402,
+      "code_combined_score": 0.00158,
+      "focus_score": 0.001402,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 197,
+      "mean_score": 0.00069,
+      "combined_score": 0.001767,
+      "code_combined_score": 0.001973,
+      "focus_score": 0.001767,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 198,
+      "mean_score": 0.000702,
+      "combined_score": 0.001616,
+      "code_combined_score": 0.001827,
+      "focus_score": 0.001616,
+      "is_cut_point": false,
+      "token": "):"
+    },
+    {
+      "step_index": 199,
+      "mean_score": 0.000758,
+      "combined_score": 0.001835,
+      "code_combined_score": 0.002065,
+      "focus_score": 0.001835,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 200,
+      "mean_score": 0.000493,
+      "combined_score": 0.001157,
+      "code_combined_score": 0.001307,
+      "focus_score": 0.001157,
+      "is_cut_point": false,
+      "token": "       "
+    },
+    {
+      "step_index": 201,
+      "mean_score": 0.000967,
+      "combined_score": 0.002243,
+      "code_combined_score": 0.002539,
+      "focus_score": 0.002243,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 202,
+      "mean_score": 0.000618,
+      "combined_score": 0.001493,
+      "code_combined_score": 0.001665,
+      "focus_score": 0.001493,
+      "is_cut_point": false,
+      "token": " abs"
+    },
+    {
+      "step_index": 203,
+      "mean_score": 0.000938,
+      "combined_score": 0.002082,
+      "code_combined_score": 0.002321,
+      "focus_score": 0.002082,
+      "is_cut_point": false,
+      "token": "(sorted"
+    },
+    {
+      "step_index": 204,
+      "mean_score": 0.000472,
+      "combined_score": 0.001094,
+      "code_combined_score": 0.001234,
+      "focus_score": 0.001094,
+      "is_cut_point": false,
+      "token": "_numbers"
+    },
+    {
+      "step_index": 205,
+      "mean_score": 0.00043,
+      "combined_score": 0.001089,
+      "code_combined_score": 0.001213,
+      "focus_score": 0.001089,
+      "is_cut_point": false,
+      "token": "[i"
+    },
+    {
+      "step_index": 206,
+      "mean_score": 0.0005,
+      "combined_score": 0.001302,
+      "code_combined_score": 0.001458,
+      "focus_score": 0.001302,
+      "is_cut_point": false,
+      "token": "]"
+    },
+    {
+      "step_index": 207,
+      "mean_score": 0.00051,
+      "combined_score": 0.001252,
+      "code_combined_score": 0.0014,
+      "focus_score": 0.001252,
+      "is_cut_point": false,
+      "token": " -"
+    },
+    {
+      "step_index": 208,
+      "mean_score": 0.000378,
+      "combined_score": 0.000918,
+      "code_combined_score": 0.001027,
+      "focus_score": 0.000918,
+      "is_cut_point": false,
+      "token": " sorted"
+    },
+    {
+      "step_index": 209,
+      "mean_score": 0.000581,
+      "combined_score": 0.001285,
+      "code_combined_score": 0.001458,
+      "focus_score": 0.001285,
+      "is_cut_point": false,
+      "token": "_numbers"
+    },
+    {
+      "step_index": 210,
+      "mean_score": 0.000703,
+      "combined_score": 0.001511,
+      "code_combined_score": 0.001723,
+      "focus_score": 0.001511,
+      "is_cut_point": false,
+      "token": "[i"
+    },
+    {
+      "step_index": 211,
+      "mean_score": 0.001977,
+      "combined_score": 0.003614,
+      "code_combined_score": 0.003962,
+      "focus_score": 0.003614,
+      "is_cut_point": false,
+      "token": " +"
+    },
+    {
+      "step_index": 212,
+      "mean_score": 0.00055,
+      "combined_score": 0.001074,
+      "code_combined_score": 0.001227,
+      "focus_score": 0.001074,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 213,
+      "mean_score": 0.000614,
+      "combined_score": 0.001099,
+      "code_combined_score": 0.001238,
+      "focus_score": 0.001099,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 214,
+      "mean_score": 0.001346,
+      "combined_score": 0.002303,
+      "code_combined_score": 0.002566,
+      "focus_score": 0.002303,
+      "is_cut_point": false,
+      "token": "])"
+    },
+    {
+      "step_index": 215,
+      "mean_score": 0.000725,
+      "combined_score": 0.00124,
+      "code_combined_score": 0.001387,
+      "focus_score": 0.00124,
+      "is_cut_point": false,
+      "token": " <"
+    },
+    {
+      "step_index": 216,
+      "mean_score": 0.000662,
+      "combined_score": 0.00139,
+      "code_combined_score": 0.001548,
+      "focus_score": 0.00139,
+      "is_cut_point": false,
+      "token": " threshold"
+    },
+    {
+      "step_index": 217,
+      "mean_score": 0.000385,
+      "combined_score": 0.000697,
+      "code_combined_score": 0.000785,
+      "focus_score": 0.000697,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 218,
+      "mean_score": 0.00084,
+      "combined_score": 0.001488,
+      "code_combined_score": 0.001667,
+      "focus_score": 0.001488,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 219,
+      "mean_score": 0.000343,
+      "combined_score": 0.000586,
+      "code_combined_score": 0.000656,
+      "focus_score": 0.000586,
+      "is_cut_point": false,
+      "token": "           "
+    },
+    {
+      "step_index": 220,
+      "mean_score": 0.000725,
+      "combined_score": 0.001137,
+      "code_combined_score": 0.001257,
+      "focus_score": 0.001137,
+      "is_cut_point": false,
+      "token": " return"
+    },
+    {
+      "step_index": 221,
+      "mean_score": 0.000267,
+      "combined_score": 0.000449,
+      "code_combined_score": 0.000504,
+      "focus_score": 0.000449,
+      "is_cut_point": false,
+      "token": " True"
+    },
+    {
+      "step_index": 222,
+      "mean_score": 0.000513,
+      "combined_score": 0.000841,
+      "code_combined_score": 0.000926,
+      "focus_score": 0.000841,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 223,
+      "mean_score": 0.000406,
+      "combined_score": 0.000653,
+      "code_combined_score": 0.000721,
+      "focus_score": 0.000653,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 224,
+      "mean_score": 0.000806,
+      "combined_score": 0.004138,
+      "code_combined_score": 0.004335,
+      "focus_score": 0.004138,
+      "is_cut_point": true,
+      "token": " return"
+    },
+    {
+      "step_index": 225,
+      "mean_score": 0.001005,
+      "combined_score": 0.002952,
+      "code_combined_score": 0.003103,
+      "focus_score": 0.002952,
+      "is_cut_point": false,
+      "token": " False"
+    },
+    {
+      "step_index": 226,
+      "mean_score": 0.00052,
+      "combined_score": 0.001749,
+      "code_combined_score": 0.00182,
+      "focus_score": 0.001749,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 227,
+      "mean_score": 0.000548,
+      "combined_score": 0.001412,
+      "code_combined_score": 0.001456,
+      "focus_score": 0.001412,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 228,
+      "mean_score": 0.000718,
+      "combined_score": 0.001429,
+      "code_combined_score": 0.001454,
+      "focus_score": 0.001429,
+      "is_cut_point": false,
+      "token": "#"
+    },
+    {
+      "step_index": 229,
+      "mean_score": 0.0009,
+      "combined_score": 0.001644,
+      "code_combined_score": 0.001641,
+      "focus_score": 0.001644,
+      "is_cut_point": false,
+      "token": " Example"
+    },
+    {
+      "step_index": 230,
+      "mean_score": 0.00085,
+      "combined_score": 0.001747,
+      "code_combined_score": 0.001722,
+      "focus_score": 0.001747,
+      "is_cut_point": false,
+      "token": " usage"
+    },
+    {
+      "step_index": 231,
+      "mean_score": 0.000506,
+      "combined_score": 0.000887,
+      "code_combined_score": 0.000884,
+      "focus_score": 0.000887,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 232,
+      "mean_score": 0.000805,
+      "combined_score": 0.001588,
+      "code_combined_score": 0.001586,
+      "focus_score": 0.001588,
+      "is_cut_point": false,
+      "token": "if"
+    },
+    {
+      "step_index": 233,
+      "mean_score": 0.000511,
+      "combined_score": 0.000791,
+      "code_combined_score": 0.000788,
+      "focus_score": 0.000791,
+      "is_cut_point": false,
+      "token": " __"
+    },
+    {
+      "step_index": 234,
+      "mean_score": 0.000675,
+      "combined_score": 0.001055,
+      "code_combined_score": 0.001051,
+      "focus_score": 0.001055,
+      "is_cut_point": false,
+      "token": "name"
+    },
+    {
+      "step_index": 235,
+      "mean_score": 0.000509,
+      "combined_score": 0.000812,
+      "code_combined_score": 0.000801,
+      "focus_score": 0.000812,
+      "is_cut_point": false,
+      "token": "__"
+    },
+    {
+      "step_index": 236,
+      "mean_score": 0.000509,
+      "combined_score": 0.000771,
+      "code_combined_score": 0.000763,
+      "focus_score": 0.000771,
+      "is_cut_point": false,
+      "token": " =="
+    },
+    {
+      "step_index": 237,
+      "mean_score": 0.001022,
+      "combined_score": 0.001518,
+      "code_combined_score": 0.001514,
+      "focus_score": 0.001518,
+      "is_cut_point": false,
+      "token": " \"__"
+    },
+    {
+      "step_index": 238,
+      "mean_score": 0.000596,
+      "combined_score": 0.000885,
+      "code_combined_score": 0.000833,
+      "focus_score": 0.000885,
+      "is_cut_point": false,
+      "token": "main"
+    },
+    {
+      "step_index": 239,
+      "mean_score": 0.000789,
+      "combined_score": 0.001181,
+      "code_combined_score": 0.001096,
+      "focus_score": 0.001181,
+      "is_cut_point": false,
+      "token": "__"
+    },
+    {
+      "step_index": 240,
+      "mean_score": 0.000565,
+      "combined_score": 0.000936,
+      "code_combined_score": 0.000804,
+      "focus_score": 0.000936,
+      "is_cut_point": false,
+      "token": "\":"
+    },
+    {
+      "step_index": 241,
+      "mean_score": 0.000472,
+      "combined_score": 0.000797,
+      "code_combined_score": 0.000694,
+      "focus_score": 0.000797,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 242,
+      "mean_score": 0.000613,
+      "combined_score": 0.00115,
+      "code_combined_score": 0.001027,
+      "focus_score": 0.00115,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 243,
+      "mean_score": 0.000337,
+      "combined_score": 0.000604,
+      "code_combined_score": 0.000558,
+      "focus_score": 0.000604,
+      "is_cut_point": false,
+      "token": " import"
+    },
+    {
+      "step_index": 244,
+      "mean_score": 0.001451,
+      "combined_score": 0.0034,
+      "code_combined_score": 0.003388,
+      "focus_score": 0.0034,
+      "is_cut_point": false,
+      "token": " do"
+    },
+    {
+      "step_index": 245,
+      "mean_score": 0.000676,
+      "combined_score": 0.001305,
+      "code_combined_score": 0.001199,
+      "focus_score": 0.001305,
+      "is_cut_point": false,
+      "token": "ct"
+    },
+    {
+      "step_index": 246,
+      "mean_score": 0.000471,
+      "combined_score": 0.00084,
+      "code_combined_score": 0.000784,
+      "focus_score": 0.00084,
+      "is_cut_point": false,
+      "token": "est"
+    },
+    {
+      "step_index": 247,
+      "mean_score": 0.00056,
+      "combined_score": 0.001033,
+      "code_combined_score": 0.000954,
+      "focus_score": 0.001033,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 248,
+      "mean_score": 0.002961,
+      "combined_score": 0.006988,
+      "code_combined_score": 0.005861,
+      "focus_score": 0.006988,
+      "is_cut_point": false,
+      "token": "   "
+    },
+    {
+      "step_index": 249,
+      "mean_score": 0.000489,
+      "combined_score": 0.002417,
+      "code_combined_score": 0.002559,
+      "focus_score": 0.002417,
+      "is_cut_point": true,
+      "token": " do"
+    },
+    {
+      "step_index": 250,
+      "mean_score": 0.000564,
+      "combined_score": 0.002254,
+      "code_combined_score": 0.002412,
+      "focus_score": 0.002254,
+      "is_cut_point": false,
+      "token": "ct"
+    },
+    {
+      "step_index": 251,
+      "mean_score": 0.000414,
+      "combined_score": 0.00145,
+      "code_combined_score": 0.001563,
+      "focus_score": 0.00145,
+      "is_cut_point": false,
+      "token": "est"
+    },
+    {
+      "step_index": 252,
+      "mean_score": 0.000858,
+      "combined_score": 0.002325,
+      "code_combined_score": 0.002502,
+      "focus_score": 0.002325,
+      "is_cut_point": false,
+      "token": ".test"
+    },
+    {
+      "step_index": 253,
+      "mean_score": 0.001355,
+      "combined_score": 0.003926,
+      "code_combined_score": 0.003811,
+      "focus_score": 0.003926,
+      "is_cut_point": false,
+      "token": "mod"
+    },
+    {
+      "step_index": 254,
+      "mean_score": 0.000825,
+      "combined_score": 0.001942,
+      "code_combined_score": 0.002056,
+      "focus_score": 0.001942,
+      "is_cut_point": false,
+      "token": "()"
+    },
+    {
+      "step_index": 255,
+      "mean_score": 0.000677,
+      "combined_score": 0.001523,
+      "code_combined_score": 0.001603,
+      "focus_score": 0.001523,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 256,
+      "mean_score": 0.000621,
+      "combined_score": 0.001306,
+      "code_combined_score": 0.001369,
+      "focus_score": 0.001306,
+      "is_cut_point": false,
+      "token": "```"
+    },
+    {
+      "step_index": 257,
+      "mean_score": 0.000451,
+      "combined_score": 0.000842,
+      "code_combined_score": 0.000876,
+      "focus_score": 0.000842,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 258,
+      "mean_score": 0.000468,
+      "combined_score": 0.000858,
+      "code_combined_score": 0.000895,
+      "focus_score": 0.000858,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 259,
+      "mean_score": 0.000672,
+      "combined_score": 0.001299,
+      "code_combined_score": 0.001346,
+      "focus_score": 0.001299,
+      "is_cut_point": false,
+      "token": "###"
+    },
+    {
+      "step_index": 260,
+      "mean_score": 0.000393,
+      "combined_score": 0.000768,
+      "code_combined_score": 0.000787,
+      "focus_score": 0.000768,
+      "is_cut_point": false,
+      "token": " Explanation"
+    },
+    {
+      "step_index": 261,
+      "mean_score": 0.000322,
+      "combined_score": 0.000592,
+      "code_combined_score": 0.000607,
+      "focus_score": 0.000592,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 262,
+      "mean_score": 0.000556,
+      "combined_score": 0.001011,
+      "code_combined_score": 0.001038,
+      "focus_score": 0.001011,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 263,
+      "mean_score": 0.000908,
+      "combined_score": 0.001562,
+      "code_combined_score": 0.001592,
+      "focus_score": 0.001562,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 264,
+      "mean_score": 0.000393,
+      "combined_score": 0.000609,
+      "code_combined_score": 0.000625,
+      "focus_score": 0.000609,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 265,
+      "mean_score": 0.000305,
+      "combined_score": 0.000452,
+      "code_combined_score": 0.000465,
+      "focus_score": 0.000452,
+      "is_cut_point": false,
+      "token": " **"
+    },
+    {
+      "step_index": 266,
+      "mean_score": 0.000689,
+      "combined_score": 0.001163,
+      "code_combined_score": 0.001015,
+      "focus_score": 0.001163,
+      "is_cut_point": false,
+      "token": "Sort"
+    },
+    {
+      "step_index": 267,
+      "mean_score": 0.000403,
+      "combined_score": 0.000584,
+      "code_combined_score": 0.000592,
+      "focus_score": 0.000584,
+      "is_cut_point": false,
+      "token": "ing"
+    },
+    {
+      "step_index": 268,
+      "mean_score": 0.000214,
+      "combined_score": 0.0003,
+      "code_combined_score": 0.000308,
+      "focus_score": 0.0003,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 269,
+      "mean_score": 0.000729,
+      "combined_score": 0.001063,
+      "code_combined_score": 0.001095,
+      "focus_score": 0.001063,
+      "is_cut_point": false,
+      "token": " List"
+    },
+    {
+      "step_index": 270,
+      "mean_score": 0.000293,
+      "combined_score": 0.000397,
+      "code_combined_score": 0.000409,
+      "focus_score": 0.000397,
+      "is_cut_point": false,
+      "token": "**:"
+    },
+    {
+      "step_index": 271,
+      "mean_score": 0.000156,
+      "combined_score": 0.000222,
+      "code_combined_score": 0.000227,
+      "focus_score": 0.000222,
+      "is_cut_point": false,
+      "token": " We"
+    },
+    {
+      "step_index": 272,
+      "mean_score": 0.000174,
+      "combined_score": 0.000249,
+      "code_combined_score": 0.000253,
+      "focus_score": 0.000249,
+      "is_cut_point": false,
+      "token": " first"
+    },
+    {
+      "step_index": 273,
+      "mean_score": 0.000206,
+      "combined_score": 0.0003,
+      "code_combined_score": 0.000305,
+      "focus_score": 0.0003,
+      "is_cut_point": false,
+      "token": " sort"
+    },
+    {
+      "step_index": 274,
+      "mean_score": 0.000203,
+      "combined_score": 0.000296,
+      "code_combined_score": 0.000301,
+      "focus_score": 0.000296,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 275,
+      "mean_score": 0.000139,
+      "combined_score": 0.000195,
+      "code_combined_score": 0.000193,
+      "focus_score": 0.000195,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 276,
+      "mean_score": 0.000215,
+      "combined_score": 0.000428,
+      "code_combined_score": 0.000434,
+      "focus_score": 0.000428,
+      "is_cut_point": false,
+      "token": " of"
+    },
+    {
+      "step_index": 277,
+      "mean_score": 0.000362,
+      "combined_score": 0.00048,
+      "code_combined_score": 0.000488,
+      "focus_score": 0.00048,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 278,
+      "mean_score": 0.00021,
+      "combined_score": 0.000314,
+      "code_combined_score": 0.000316,
+      "focus_score": 0.000314,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 279,
+      "mean_score": 0.001156,
+      "combined_score": 0.001589,
+      "code_combined_score": 0.001618,
+      "focus_score": 0.001589,
+      "is_cut_point": false,
+      "token": " This"
+    },
+    {
+      "step_index": 280,
+      "mean_score": 0.000177,
+      "combined_score": 0.000233,
+      "code_combined_score": 0.000235,
+      "focus_score": 0.000233,
+      "is_cut_point": false,
+      "token": " helps"
+    },
+    {
+      "step_index": 281,
+      "mean_score": 0.000706,
+      "combined_score": 0.005069,
+      "code_combined_score": 0.005176,
+      "focus_score": 0.005069,
+      "is_cut_point": true,
+      "token": " in"
+    },
+    {
+      "step_index": 282,
+      "mean_score": 0.000807,
+      "combined_score": 0.003769,
+      "code_combined_score": 0.003834,
+      "focus_score": 0.003769,
+      "is_cut_point": false,
+      "token": " easily"
+    },
+    {
+      "step_index": 283,
+      "mean_score": 0.000593,
+      "combined_score": 0.002169,
+      "code_combined_score": 0.002205,
+      "focus_score": 0.002169,
+      "is_cut_point": false,
+      "token": " comparing"
+    },
+    {
+      "step_index": 284,
+      "mean_score": 0.000615,
+      "combined_score": 0.001569,
+      "code_combined_score": 0.001588,
+      "focus_score": 0.001569,
+      "is_cut_point": false,
+      "token": " adjacent"
+    },
+    {
+      "step_index": 285,
+      "mean_score": 0.000562,
+      "combined_score": 0.001204,
+      "code_combined_score": 0.00121,
+      "focus_score": 0.001204,
+      "is_cut_point": false,
+      "token": " elements"
+    },
+    {
+      "step_index": 286,
+      "mean_score": 0.000593,
+      "combined_score": 0.001209,
+      "code_combined_score": 0.001211,
+      "focus_score": 0.001209,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 287,
+      "mean_score": 0.00035,
+      "combined_score": 0.000772,
+      "code_combined_score": 0.000741,
+      "focus_score": 0.000772,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 288,
+      "mean_score": 0.000318,
+      "combined_score": 0.000672,
+      "code_combined_score": 0.000665,
+      "focus_score": 0.000672,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 289,
+      "mean_score": 0.00057,
+      "combined_score": 0.001204,
+      "code_combined_score": 0.001086,
+      "focus_score": 0.001204,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 290,
+      "mean_score": 0.000354,
+      "combined_score": 0.000672,
+      "code_combined_score": 0.000679,
+      "focus_score": 0.000672,
+      "is_cut_point": false,
+      "token": " **"
+    },
+    {
+      "step_index": 291,
+      "mean_score": 0.000448,
+      "combined_score": 0.000921,
+      "code_combined_score": 0.000941,
+      "focus_score": 0.000921,
+      "is_cut_point": false,
+      "token": "Iter"
+    },
+    {
+      "step_index": 292,
+      "mean_score": 0.000659,
+      "combined_score": 0.001379,
+      "code_combined_score": 0.001419,
+      "focus_score": 0.001379,
+      "is_cut_point": false,
+      "token": "ating"
+    },
+    {
+      "step_index": 293,
+      "mean_score": 0.000795,
+      "combined_score": 0.001865,
+      "code_combined_score": 0.001952,
+      "focus_score": 0.001865,
+      "is_cut_point": false,
+      "token": " Through"
+    },
+    {
+      "step_index": 294,
+      "mean_score": 0.000406,
+      "combined_score": 0.000762,
+      "code_combined_score": 0.000805,
+      "focus_score": 0.000762,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 295,
+      "mean_score": 0.000665,
+      "combined_score": 0.001296,
+      "code_combined_score": 0.001373,
+      "focus_score": 0.001296,
+      "is_cut_point": false,
+      "token": " List"
+    },
+    {
+      "step_index": 296,
+      "mean_score": 0.000999,
+      "combined_score": 0.002003,
+      "code_combined_score": 0.002053,
+      "focus_score": 0.002003,
+      "is_cut_point": false,
+      "token": "**:"
+    },
+    {
+      "step_index": 297,
+      "mean_score": 0.000516,
+      "combined_score": 0.001019,
+      "code_combined_score": 0.001092,
+      "focus_score": 0.001019,
+      "is_cut_point": false,
+      "token": " We"
+    },
+    {
+      "step_index": 298,
+      "mean_score": 0.00033,
+      "combined_score": 0.000631,
+      "code_combined_score": 0.000679,
+      "focus_score": 0.000631,
+      "is_cut_point": false,
+      "token": " then"
+    },
+    {
+      "step_index": 299,
+      "mean_score": 0.000684,
+      "combined_score": 0.001367,
+      "code_combined_score": 0.001465,
+      "focus_score": 0.001367,
+      "is_cut_point": false,
+      "token": " iterate"
+    },
+    {
+      "step_index": 300,
+      "mean_score": 0.000343,
+      "combined_score": 0.000641,
+      "code_combined_score": 0.000689,
+      "focus_score": 0.000641,
+      "is_cut_point": false,
+      "token": " through"
+    },
+    {
+      "step_index": 301,
+      "mean_score": 0.000311,
+      "combined_score": 0.000592,
+      "code_combined_score": 0.000638,
+      "focus_score": 0.000592,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 302,
+      "mean_score": 0.000658,
+      "combined_score": 0.001243,
+      "code_combined_score": 0.001337,
+      "focus_score": 0.001243,
+      "is_cut_point": false,
+      "token": " sorted"
+    },
+    {
+      "step_index": 303,
+      "mean_score": 0.000362,
+      "combined_score": 0.000751,
+      "code_combined_score": 0.000812,
+      "focus_score": 0.000751,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 304,
+      "mean_score": 0.000459,
+      "combined_score": 0.000888,
+      "code_combined_score": 0.000957,
+      "focus_score": 0.000888,
+      "is_cut_point": false,
+      "token": " and"
+    },
+    {
+      "step_index": 305,
+      "mean_score": 0.00042,
+      "combined_score": 0.000812,
+      "code_combined_score": 0.00088,
+      "focus_score": 0.000812,
+      "is_cut_point": false,
+      "token": " compare"
+    },
+    {
+      "step_index": 306,
+      "mean_score": 0.000212,
+      "combined_score": 0.000399,
+      "code_combined_score": 0.000414,
+      "focus_score": 0.000399,
+      "is_cut_point": false,
+      "token": " each"
+    },
+    {
+      "step_index": 307,
+      "mean_score": 0.000436,
+      "combined_score": 0.000849,
+      "code_combined_score": 0.00091,
+      "focus_score": 0.000849,
+      "is_cut_point": false,
+      "token": " pair"
+    },
+    {
+      "step_index": 308,
+      "mean_score": 0.000469,
+      "combined_score": 0.000877,
+      "code_combined_score": 0.00094,
+      "focus_score": 0.000877,
+      "is_cut_point": false,
+      "token": " of"
+    },
+    {
+      "step_index": 309,
+      "mean_score": 0.000225,
+      "combined_score": 0.000417,
+      "code_combined_score": 0.000429,
+      "focus_score": 0.000417,
+      "is_cut_point": false,
+      "token": " adjacent"
+    },
+    {
+      "step_index": 310,
+      "mean_score": 0.000286,
+      "combined_score": 0.000542,
+      "code_combined_score": 0.000554,
+      "focus_score": 0.000542,
+      "is_cut_point": false,
+      "token": " elements"
+    },
+    {
+      "step_index": 311,
+      "mean_score": 0.00038,
+      "combined_score": 0.000689,
+      "code_combined_score": 0.000723,
+      "focus_score": 0.000689,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 312,
+      "mean_score": 0.000597,
+      "combined_score": 0.001037,
+      "code_combined_score": 0.001103,
+      "focus_score": 0.001037,
+      "is_cut_point": false,
+      "token": " For"
+    },
+    {
+      "step_index": 313,
+      "mean_score": 0.000713,
+      "combined_score": 0.004207,
+      "code_combined_score": 0.004347,
+      "focus_score": 0.004207,
+      "is_cut_point": true,
+      "token": " each"
+    },
+    {
+      "step_index": 314,
+      "mean_score": 0.000868,
+      "combined_score": 0.003099,
+      "code_combined_score": 0.003234,
+      "focus_score": 0.003099,
+      "is_cut_point": false,
+      "token": " pair"
+    },
+    {
+      "step_index": 315,
+      "mean_score": 0.000815,
+      "combined_score": 0.003201,
+      "code_combined_score": 0.00335,
+      "focus_score": 0.003201,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 316,
+      "mean_score": 0.000433,
+      "combined_score": 0.0015,
+      "code_combined_score": 0.001565,
+      "focus_score": 0.0015,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 317,
+      "mean_score": 0.000578,
+      "combined_score": 0.00186,
+      "code_combined_score": 0.001945,
+      "focus_score": 0.00186,
+      "is_cut_point": false,
+      "token": " check"
+    },
+    {
+      "step_index": 318,
+      "mean_score": 0.000636,
+      "combined_score": 0.001822,
+      "code_combined_score": 0.001941,
+      "focus_score": 0.001822,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 319,
+      "mean_score": 0.000598,
+      "combined_score": 0.001518,
+      "code_combined_score": 0.001584,
+      "focus_score": 0.001518,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 320,
+      "mean_score": 0.000968,
+      "combined_score": 0.002129,
+      "code_combined_score": 0.002214,
+      "focus_score": 0.002129,
+      "is_cut_point": false,
+      "token": " absolute"
+    },
+    {
+      "step_index": 321,
+      "mean_score": 0.00054,
+      "combined_score": 0.001127,
+      "code_combined_score": 0.001183,
+      "focus_score": 0.001127,
+      "is_cut_point": false,
+      "token": " difference"
+    },
+    {
+      "step_index": 322,
+      "mean_score": 0.000606,
+      "combined_score": 0.001358,
+      "code_combined_score": 0.001422,
+      "focus_score": 0.001358,
+      "is_cut_point": false,
+      "token": " is"
+    },
+    {
+      "step_index": 323,
+      "mean_score": 0.000421,
+      "combined_score": 0.000853,
+      "code_combined_score": 0.00088,
+      "focus_score": 0.000853,
+      "is_cut_point": false,
+      "token": " less"
+    },
+    {
+      "step_index": 324,
+      "mean_score": 0.000666,
+      "combined_score": 0.00131,
+      "code_combined_score": 0.001336,
+      "focus_score": 0.00131,
+      "is_cut_point": false,
+      "token": " than"
+    },
+    {
+      "step_index": 325,
+      "mean_score": 0.000469,
+      "combined_score": 0.001024,
+      "code_combined_score": 0.001036,
+      "focus_score": 0.001024,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 326,
+      "mean_score": 0.000506,
+      "combined_score": 0.001102,
+      "code_combined_score": 0.001124,
+      "focus_score": 0.001102,
+      "is_cut_point": false,
+      "token": " threshold"
+    },
+    {
+      "step_index": 327,
+      "mean_score": 0.000758,
+      "combined_score": 0.001616,
+      "code_combined_score": 0.001739,
+      "focus_score": 0.001616,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 328,
+      "mean_score": 0.000492,
+      "combined_score": 0.001047,
+      "code_combined_score": 0.001098,
+      "focus_score": 0.001047,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 329,
+      "mean_score": 0.00079,
+      "combined_score": 0.001498,
+      "code_combined_score": 0.001548,
+      "focus_score": 0.001498,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 330,
+      "mean_score": 0.000292,
+      "combined_score": 0.000583,
+      "code_combined_score": 0.000619,
+      "focus_score": 0.000583,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 331,
+      "mean_score": 0.000523,
+      "combined_score": 0.00109,
+      "code_combined_score": 0.001153,
+      "focus_score": 0.00109,
+      "is_cut_point": false,
+      "token": " **"
+    },
+    {
+      "step_index": 332,
+      "mean_score": 0.000316,
+      "combined_score": 0.000566,
+      "code_combined_score": 0.000593,
+      "focus_score": 0.000566,
+      "is_cut_point": false,
+      "token": "Returning"
+    },
+    {
+      "step_index": 333,
+      "mean_score": 0.000408,
+      "combined_score": 0.000759,
+      "code_combined_score": 0.000795,
+      "focus_score": 0.000759,
+      "is_cut_point": false,
+      "token": " Result"
+    },
+    {
+      "step_index": 334,
+      "mean_score": 0.000276,
+      "combined_score": 0.000507,
+      "code_combined_score": 0.000534,
+      "focus_score": 0.000507,
+      "is_cut_point": false,
+      "token": "**:"
+    },
+    {
+      "step_index": 335,
+      "mean_score": 0.00099,
+      "combined_score": 0.002287,
+      "code_combined_score": 0.002369,
+      "focus_score": 0.002287,
+      "is_cut_point": false,
+      "token": " If"
+    },
+    {
+      "step_index": 336,
+      "mean_score": 0.000263,
+      "combined_score": 0.000475,
+      "code_combined_score": 0.000498,
+      "focus_score": 0.000475,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 337,
+      "mean_score": 0.000555,
+      "combined_score": 0.00148,
+      "code_combined_score": 0.001514,
+      "focus_score": 0.00148,
+      "is_cut_point": false,
+      "token": " find"
+    },
+    {
+      "step_index": 338,
+      "mean_score": 0.000335,
+      "combined_score": 0.00065,
+      "code_combined_score": 0.000671,
+      "focus_score": 0.00065,
+      "is_cut_point": false,
+      "token": " such"
+    },
+    {
+      "step_index": 339,
+      "mean_score": 0.000241,
+      "combined_score": 0.000428,
+      "code_combined_score": 0.00044,
+      "focus_score": 0.000428,
+      "is_cut_point": false,
+      "token": " a"
+    },
+    {
+      "step_index": 340,
+      "mean_score": 0.000465,
+      "combined_score": 0.000853,
+      "code_combined_score": 0.000876,
+      "focus_score": 0.000853,
+      "is_cut_point": false,
+      "token": " pair"
+    },
+    {
+      "step_index": 341,
+      "mean_score": 0.0002,
+      "combined_score": 0.000337,
+      "code_combined_score": 0.000345,
+      "focus_score": 0.000337,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 342,
+      "mean_score": 0.000975,
+      "combined_score": 0.002123,
+      "code_combined_score": 0.002159,
+      "focus_score": 0.002123,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 343,
+      "mean_score": 0.000231,
+      "combined_score": 0.000389,
+      "code_combined_score": 0.000393,
+      "focus_score": 0.000389,
+      "is_cut_point": false,
+      "token": " return"
+    },
+    {
+      "step_index": 344,
+      "mean_score": 0.000187,
+      "combined_score": 0.000291,
+      "code_combined_score": 0.000296,
+      "focus_score": 0.000291,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 345,
+      "mean_score": 0.001433,
+      "combined_score": 0.006622,
+      "code_combined_score": 0.006843,
+      "focus_score": 0.006622,
+      "is_cut_point": true,
+      "token": "True"
+    },
+    {
+      "step_index": 346,
+      "mean_score": 0.000872,
+      "combined_score": 0.003399,
+      "code_combined_score": 0.003495,
+      "focus_score": 0.003399,
+      "is_cut_point": false,
+      "token": "`."
+    },
+    {
+      "step_index": 347,
+      "mean_score": 0.000633,
+      "combined_score": 0.001934,
+      "code_combined_score": 0.002032,
+      "focus_score": 0.001934,
+      "is_cut_point": false,
+      "token": " If"
+    },
+    {
+      "step_index": 348,
+      "mean_score": 0.000574,
+      "combined_score": 0.001595,
+      "code_combined_score": 0.001677,
+      "focus_score": 0.001595,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 349,
+      "mean_score": 0.000576,
+      "combined_score": 0.001377,
+      "code_combined_score": 0.001447,
+      "focus_score": 0.001377,
+      "is_cut_point": false,
+      "token": " finish"
+    },
+    {
+      "step_index": 350,
+      "mean_score": 0.000802,
+      "combined_score": 0.001938,
+      "code_combined_score": 0.002045,
+      "focus_score": 0.001938,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 351,
+      "mean_score": 0.000343,
+      "combined_score": 0.000834,
+      "code_combined_score": 0.000881,
+      "focus_score": 0.000834,
+      "is_cut_point": false,
+      "token": " loop"
+    },
+    {
+      "step_index": 352,
+      "mean_score": 0.000954,
+      "combined_score": 0.002017,
+      "code_combined_score": 0.002134,
+      "focus_score": 0.002017,
+      "is_cut_point": false,
+      "token": " without"
+    },
+    {
+      "step_index": 353,
+      "mean_score": 0.000376,
+      "combined_score": 0.000723,
+      "code_combined_score": 0.000761,
+      "focus_score": 0.000723,
+      "is_cut_point": false,
+      "token": " finding"
+    },
+    {
+      "step_index": 354,
+      "mean_score": 0.000382,
+      "combined_score": 0.000746,
+      "code_combined_score": 0.000787,
+      "focus_score": 0.000746,
+      "is_cut_point": false,
+      "token": " such"
+    },
+    {
+      "step_index": 355,
+      "mean_score": 0.000495,
+      "combined_score": 0.000978,
+      "code_combined_score": 0.001033,
+      "focus_score": 0.000978,
+      "is_cut_point": false,
+      "token": " a"
+    },
+    {
+      "step_index": 356,
+      "mean_score": 0.000361,
+      "combined_score": 0.000801,
+      "code_combined_score": 0.000835,
+      "focus_score": 0.000801,
+      "is_cut_point": false,
+      "token": " pair"
+    },
+    {
+      "step_index": 357,
+      "mean_score": 0.000595,
+      "combined_score": 0.001048,
+      "code_combined_score": 0.001099,
+      "focus_score": 0.001048,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 358,
+      "mean_score": 0.000603,
+      "combined_score": 0.001586,
+      "code_combined_score": 0.001666,
+      "focus_score": 0.001586,
+      "is_cut_point": false,
+      "token": " we"
+    },
+    {
+      "step_index": 359,
+      "mean_score": 0.000319,
+      "combined_score": 0.000679,
+      "code_combined_score": 0.000715,
+      "focus_score": 0.000679,
+      "is_cut_point": false,
+      "token": " return"
+    },
+    {
+      "step_index": 360,
+      "mean_score": 0.000547,
+      "combined_score": 0.000971,
+      "code_combined_score": 0.001026,
+      "focus_score": 0.000971,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 361,
+      "mean_score": 0.000533,
+      "combined_score": 0.001114,
+      "code_combined_score": 0.001172,
+      "focus_score": 0.001114,
+      "is_cut_point": false,
+      "token": "False"
+    },
+    {
+      "step_index": 362,
+      "mean_score": 0.000361,
+      "combined_score": 0.000636,
+      "code_combined_score": 0.000671,
+      "focus_score": 0.000636,
+      "is_cut_point": false,
+      "token": "`."
+    },
+    {
+      "step_index": 363,
+      "mean_score": 0.000477,
+      "combined_score": 0.000817,
+      "code_combined_score": 0.00086,
+      "focus_score": 0.000817,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 364,
+      "mean_score": 0.00052,
+      "combined_score": 0.000922,
+      "code_combined_score": 0.000966,
+      "focus_score": 0.000922,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 365,
+      "mean_score": 0.000311,
+      "combined_score": 0.000549,
+      "code_combined_score": 0.000575,
+      "focus_score": 0.000549,
+      "is_cut_point": false,
+      "token": "###"
+    },
+    {
+      "step_index": 366,
+      "mean_score": 0.000386,
+      "combined_score": 0.000672,
+      "code_combined_score": 0.000701,
+      "focus_score": 0.000672,
+      "is_cut_point": false,
+      "token": " Test"
+    },
+    {
+      "step_index": 367,
+      "mean_score": 0.000698,
+      "combined_score": 0.001082,
+      "code_combined_score": 0.001124,
+      "focus_score": 0.001082,
+      "is_cut_point": false,
+      "token": " Cases"
+    },
+    {
+      "step_index": 368,
+      "mean_score": 0.00042,
+      "combined_score": 0.000689,
+      "code_combined_score": 0.000717,
+      "focus_score": 0.000689,
+      "is_cut_point": false,
+      "token": ":"
+    },
+    {
+      "step_index": 369,
+      "mean_score": 0.000353,
+      "combined_score": 0.000569,
+      "code_combined_score": 0.00059,
+      "focus_score": 0.000569,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 370,
+      "mean_score": 0.001167,
+      "combined_score": 0.002267,
+      "code_combined_score": 0.002339,
+      "focus_score": 0.002267,
+      "is_cut_point": false,
+      "token": "-"
+    },
+    {
+      "step_index": 371,
+      "mean_score": 0.000611,
+      "combined_score": 0.000976,
+      "code_combined_score": 0.00099,
+      "focus_score": 0.000976,
+      "is_cut_point": false,
+      "token": " The"
+    },
+    {
+      "step_index": 372,
+      "mean_score": 0.000739,
+      "combined_score": 0.001187,
+      "code_combined_score": 0.001229,
+      "focus_score": 0.001187,
+      "is_cut_point": false,
+      "token": " first"
+    },
+    {
+      "step_index": 373,
+      "mean_score": 0.000726,
+      "combined_score": 0.001173,
+      "code_combined_score": 0.001216,
+      "focus_score": 0.001173,
+      "is_cut_point": false,
+      "token": " test"
+    },
+    {
+      "step_index": 374,
+      "mean_score": 0.000281,
+      "combined_score": 0.000469,
+      "code_combined_score": 0.00048,
+      "focus_score": 0.000469,
+      "is_cut_point": false,
+      "token": " case"
+    },
+    {
+      "step_index": 375,
+      "mean_score": 0.000465,
+      "combined_score": 0.000729,
+      "code_combined_score": 0.00074,
+      "focus_score": 0.000729,
+      "is_cut_point": false,
+      "token": " checks"
+    },
+    {
+      "step_index": 376,
+      "mean_score": 0.000224,
+      "combined_score": 0.000373,
+      "code_combined_score": 0.000379,
+      "focus_score": 0.000373,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 377,
+      "mean_score": 0.000836,
+      "combined_score": 0.003382,
+      "code_combined_score": 0.003432,
+      "focus_score": 0.003382,
+      "is_cut_point": true,
+      "token": " there"
+    },
+    {
+      "step_index": 378,
+      "mean_score": 0.001032,
+      "combined_score": 0.002688,
+      "code_combined_score": 0.002717,
+      "focus_score": 0.002688,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 379,
+      "mean_score": 0.000628,
+      "combined_score": 0.001345,
+      "code_combined_score": 0.001368,
+      "focus_score": 0.001345,
+      "is_cut_point": false,
+      "token": " any"
+    },
+    {
+      "step_index": 380,
+      "mean_score": 0.000691,
+      "combined_score": 0.001405,
+      "code_combined_score": 0.001429,
+      "focus_score": 0.001405,
+      "is_cut_point": false,
+      "token": " two"
+    },
+    {
+      "step_index": 381,
+      "mean_score": 0.000581,
+      "combined_score": 0.001228,
+      "code_combined_score": 0.001247,
+      "focus_score": 0.001228,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 382,
+      "mean_score": 0.000696,
+      "combined_score": 0.001449,
+      "code_combined_score": 0.001476,
+      "focus_score": 0.001449,
+      "is_cut_point": false,
+      "token": " in"
+    },
+    {
+      "step_index": 383,
+      "mean_score": 0.00045,
+      "combined_score": 0.000928,
+      "code_combined_score": 0.000934,
+      "focus_score": 0.000928,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 384,
+      "mean_score": 0.000638,
+      "combined_score": 0.001426,
+      "code_combined_score": 0.001441,
+      "focus_score": 0.001426,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 385,
+      "mean_score": 0.000331,
+      "combined_score": 0.000806,
+      "code_combined_score": 0.000805,
+      "focus_score": 0.000806,
+      "is_cut_point": false,
+      "token": " `["
+    },
+    {
+      "step_index": 386,
+      "mean_score": 0.000426,
+      "combined_score": 0.000933,
+      "code_combined_score": 0.00093,
+      "focus_score": 0.000933,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 387,
+      "mean_score": 0.000354,
+      "combined_score": 0.000804,
+      "code_combined_score": 0.000803,
+      "focus_score": 0.000804,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 388,
+      "mean_score": 0.000359,
+      "combined_score": 0.000757,
+      "code_combined_score": 0.000754,
+      "focus_score": 0.000757,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 389,
+      "mean_score": 0.000249,
+      "combined_score": 0.000569,
+      "code_combined_score": 0.000563,
+      "focus_score": 0.000569,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 390,
+      "mean_score": 0.000288,
+      "combined_score": 0.000605,
+      "code_combined_score": 0.000596,
+      "focus_score": 0.000605,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 391,
+      "mean_score": 0.000243,
+      "combined_score": 0.00052,
+      "code_combined_score": 0.000498,
+      "focus_score": 0.00052,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 392,
+      "mean_score": 0.000288,
+      "combined_score": 0.000698,
+      "code_combined_score": 0.000688,
+      "focus_score": 0.000698,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 393,
+      "mean_score": 0.000428,
+      "combined_score": 0.000949,
+      "code_combined_score": 0.000933,
+      "focus_score": 0.000949,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 394,
+      "mean_score": 0.000373,
+      "combined_score": 0.000868,
+      "code_combined_score": 0.000855,
+      "focus_score": 0.000868,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 395,
+      "mean_score": 0.000408,
+      "combined_score": 0.000786,
+      "code_combined_score": 0.000774,
+      "focus_score": 0.000786,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 396,
+      "mean_score": 0.000495,
+      "combined_score": 0.000931,
+      "code_combined_score": 0.000863,
+      "focus_score": 0.000931,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 397,
+      "mean_score": 0.000563,
+      "combined_score": 0.001035,
+      "code_combined_score": 0.001037,
+      "focus_score": 0.001035,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 398,
+      "mean_score": 0.000644,
+      "combined_score": 0.00106,
+      "code_combined_score": 0.001059,
+      "focus_score": 0.00106,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 399,
+      "mean_score": 0.000613,
+      "combined_score": 0.000995,
+      "code_combined_score": 0.000989,
+      "focus_score": 0.000995,
+      "is_cut_point": false,
+      "token": "]`"
+    },
+    {
+      "step_index": 400,
+      "mean_score": 0.000302,
+      "combined_score": 0.000518,
+      "code_combined_score": 0.000502,
+      "focus_score": 0.000518,
+      "is_cut_point": false,
+      "token": " that"
+    },
+    {
+      "step_index": 401,
+      "mean_score": 0.000289,
+      "combined_score": 0.000485,
+      "code_combined_score": 0.000487,
+      "focus_score": 0.000485,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 402,
+      "mean_score": 0.00029,
+      "combined_score": 0.000514,
+      "code_combined_score": 0.000514,
+      "focus_score": 0.000514,
+      "is_cut_point": false,
+      "token": " closer"
+    },
+    {
+      "step_index": 403,
+      "mean_score": 0.000355,
+      "combined_score": 0.000624,
+      "code_combined_score": 0.00063,
+      "focus_score": 0.000624,
+      "is_cut_point": false,
+      "token": " than"
+    },
+    {
+      "step_index": 404,
+      "mean_score": 0.000426,
+      "combined_score": 0.000746,
+      "code_combined_score": 0.000717,
+      "focus_score": 0.000746,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 405,
+      "mean_score": 0.000622,
+      "combined_score": 0.001328,
+      "code_combined_score": 0.001305,
+      "focus_score": 0.001328,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 406,
+      "mean_score": 0.000347,
+      "combined_score": 0.000606,
+      "code_combined_score": 0.000622,
+      "focus_score": 0.000606,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 407,
+      "mean_score": 0.00131,
+      "combined_score": 0.002513,
+      "code_combined_score": 0.002604,
+      "focus_score": 0.002513,
+      "is_cut_point": false,
+      "token": "5"
+    },
+    {
+      "step_index": 408,
+      "mean_score": 0.000928,
+      "combined_score": 0.001642,
+      "code_combined_score": 0.00165,
+      "focus_score": 0.001642,
+      "is_cut_point": false,
+      "token": "`"
+    },
+    {
+      "step_index": 409,
+      "mean_score": 0.002186,
+      "combined_score": 0.007455,
+      "code_combined_score": 0.007421,
+      "focus_score": 0.007455,
+      "is_cut_point": true,
+      "token": " to"
+    },
+    {
+      "step_index": 410,
+      "mean_score": 0.000947,
+      "combined_score": 0.00303,
+      "code_combined_score": 0.003036,
+      "focus_score": 0.00303,
+      "is_cut_point": false,
+      "token": " each"
+    },
+    {
+      "step_index": 411,
+      "mean_score": 0.000908,
+      "combined_score": 0.002268,
+      "code_combined_score": 0.002187,
+      "focus_score": 0.002268,
+      "is_cut_point": false,
+      "token": " other"
+    },
+    {
+      "step_index": 412,
+      "mean_score": 0.000711,
+      "combined_score": 0.001487,
+      "code_combined_score": 0.001516,
+      "focus_score": 0.001487,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 413,
+      "mean_score": 0.001168,
+      "combined_score": 0.00237,
+      "code_combined_score": 0.002492,
+      "focus_score": 0.00237,
+      "is_cut_point": false,
+      "token": " It"
+    },
+    {
+      "step_index": 414,
+      "mean_score": 0.00116,
+      "combined_score": 0.002475,
+      "code_combined_score": 0.002607,
+      "focus_score": 0.002475,
+      "is_cut_point": false,
+      "token": " should"
+    },
+    {
+      "step_index": 415,
+      "mean_score": 0.000595,
+      "combined_score": 0.001288,
+      "code_combined_score": 0.001356,
+      "focus_score": 0.001288,
+      "is_cut_point": false,
+      "token": " return"
+    },
+    {
+      "step_index": 416,
+      "mean_score": 0.000547,
+      "combined_score": 0.001092,
+      "code_combined_score": 0.001152,
+      "focus_score": 0.001092,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 417,
+      "mean_score": 0.000967,
+      "combined_score": 0.001892,
+      "code_combined_score": 0.001995,
+      "focus_score": 0.001892,
+      "is_cut_point": false,
+      "token": "False"
+    },
+    {
+      "step_index": 418,
+      "mean_score": 0.001348,
+      "combined_score": 0.002716,
+      "code_combined_score": 0.002851,
+      "focus_score": 0.002716,
+      "is_cut_point": false,
+      "token": "`."
+    },
+    {
+      "step_index": 419,
+      "mean_score": 0.00043,
+      "combined_score": 0.000809,
+      "code_combined_score": 0.000859,
+      "focus_score": 0.000809,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 420,
+      "mean_score": 0.000747,
+      "combined_score": 0.001709,
+      "code_combined_score": 0.001806,
+      "focus_score": 0.001709,
+      "is_cut_point": false,
+      "token": "-"
+    },
+    {
+      "step_index": 421,
+      "mean_score": 0.000903,
+      "combined_score": 0.001973,
+      "code_combined_score": 0.002058,
+      "focus_score": 0.001973,
+      "is_cut_point": false,
+      "token": " The"
+    },
+    {
+      "step_index": 422,
+      "mean_score": 0.00064,
+      "combined_score": 0.00129,
+      "code_combined_score": 0.00136,
+      "focus_score": 0.00129,
+      "is_cut_point": false,
+      "token": " second"
+    },
+    {
+      "step_index": 423,
+      "mean_score": 0.000346,
+      "combined_score": 0.000791,
+      "code_combined_score": 0.000831,
+      "focus_score": 0.000791,
+      "is_cut_point": false,
+      "token": " test"
+    },
+    {
+      "step_index": 424,
+      "mean_score": 0.000593,
+      "combined_score": 0.001553,
+      "code_combined_score": 0.001627,
+      "focus_score": 0.001553,
+      "is_cut_point": false,
+      "token": " case"
+    },
+    {
+      "step_index": 425,
+      "mean_score": 0.000433,
+      "combined_score": 0.000949,
+      "code_combined_score": 0.000996,
+      "focus_score": 0.000949,
+      "is_cut_point": false,
+      "token": " checks"
+    },
+    {
+      "step_index": 426,
+      "mean_score": 0.000473,
+      "combined_score": 0.001252,
+      "code_combined_score": 0.001311,
+      "focus_score": 0.001252,
+      "is_cut_point": false,
+      "token": " if"
+    },
+    {
+      "step_index": 427,
+      "mean_score": 0.000365,
+      "combined_score": 0.000855,
+      "code_combined_score": 0.000895,
+      "focus_score": 0.000855,
+      "is_cut_point": false,
+      "token": " there"
+    },
+    {
+      "step_index": 428,
+      "mean_score": 0.00033,
+      "combined_score": 0.000787,
+      "code_combined_score": 0.000824,
+      "focus_score": 0.000787,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 429,
+      "mean_score": 0.000547,
+      "combined_score": 0.001231,
+      "code_combined_score": 0.001286,
+      "focus_score": 0.001231,
+      "is_cut_point": false,
+      "token": " any"
+    },
+    {
+      "step_index": 430,
+      "mean_score": 0.00032,
+      "combined_score": 0.000743,
+      "code_combined_score": 0.000772,
+      "focus_score": 0.000743,
+      "is_cut_point": false,
+      "token": " two"
+    },
+    {
+      "step_index": 431,
+      "mean_score": 0.000678,
+      "combined_score": 0.001385,
+      "code_combined_score": 0.001455,
+      "focus_score": 0.001385,
+      "is_cut_point": false,
+      "token": " numbers"
+    },
+    {
+      "step_index": 432,
+      "mean_score": 0.000358,
+      "combined_score": 0.000759,
+      "code_combined_score": 0.000795,
+      "focus_score": 0.000759,
+      "is_cut_point": false,
+      "token": " in"
+    },
+    {
+      "step_index": 433,
+      "mean_score": 0.00041,
+      "combined_score": 0.001027,
+      "code_combined_score": 0.001063,
+      "focus_score": 0.001027,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 434,
+      "mean_score": 0.000515,
+      "combined_score": 0.001427,
+      "code_combined_score": 0.001469,
+      "focus_score": 0.001427,
+      "is_cut_point": false,
+      "token": " list"
+    },
+    {
+      "step_index": 435,
+      "mean_score": 0.000485,
+      "combined_score": 0.001006,
+      "code_combined_score": 0.001043,
+      "focus_score": 0.001006,
+      "is_cut_point": false,
+      "token": " `["
+    },
+    {
+      "step_index": 436,
+      "mean_score": 0.000312,
+      "combined_score": 0.000646,
+      "code_combined_score": 0.000661,
+      "focus_score": 0.000646,
+      "is_cut_point": false,
+      "token": "1"
+    },
+    {
+      "step_index": 437,
+      "mean_score": 0.000502,
+      "combined_score": 0.001102,
+      "code_combined_score": 0.001112,
+      "focus_score": 0.001102,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 438,
+      "mean_score": 0.000371,
+      "combined_score": 0.00075,
+      "code_combined_score": 0.000769,
+      "focus_score": 0.00075,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 439,
+      "mean_score": 0.000382,
+      "combined_score": 0.000775,
+      "code_combined_score": 0.000782,
+      "focus_score": 0.000775,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 440,
+      "mean_score": 0.000321,
+      "combined_score": 0.000627,
+      "code_combined_score": 0.000633,
+      "focus_score": 0.000627,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 441,
+      "mean_score": 0.000491,
+      "combined_score": 0.00262,
+      "code_combined_score": 0.002611,
+      "focus_score": 0.00262,
+      "is_cut_point": true,
+      "token": "2"
+    },
+    {
+      "step_index": 442,
+      "mean_score": 0.000264,
+      "combined_score": 0.001791,
+      "code_combined_score": 0.001782,
+      "focus_score": 0.001791,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 443,
+      "mean_score": 0.000549,
+      "combined_score": 0.002397,
+      "code_combined_score": 0.002277,
+      "focus_score": 0.002397,
+      "is_cut_point": false,
+      "token": "8"
+    },
+    {
+      "step_index": 444,
+      "mean_score": 0.000295,
+      "combined_score": 0.001906,
+      "code_combined_score": 0.001908,
+      "focus_score": 0.001906,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 445,
+      "mean_score": 0.00023,
+      "combined_score": 0.001113,
+      "code_combined_score": 0.000687,
+      "focus_score": 0.001113,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 446,
+      "mean_score": 0.000288,
+      "combined_score": 0.001582,
+      "code_combined_score": 0.001569,
+      "focus_score": 0.001582,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 447,
+      "mean_score": 0.000188,
+      "combined_score": 0.000716,
+      "code_combined_score": 0.000581,
+      "focus_score": 0.000716,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 448,
+      "mean_score": 0.000208,
+      "combined_score": 0.001758,
+      "code_combined_score": 0.001746,
+      "focus_score": 0.001758,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 449,
+      "mean_score": 0.000192,
+      "combined_score": 0.001128,
+      "code_combined_score": 0.001119,
+      "focus_score": 0.001128,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 450,
+      "mean_score": 0.000179,
+      "combined_score": 0.000883,
+      "code_combined_score": 0.000768,
+      "focus_score": 0.000883,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 451,
+      "mean_score": 0.000244,
+      "combined_score": 0.00224,
+      "code_combined_score": 0.002228,
+      "focus_score": 0.00224,
+      "is_cut_point": false,
+      "token": "4"
+    },
+    {
+      "step_index": 452,
+      "mean_score": 0.000141,
+      "combined_score": 0.00079,
+      "code_combined_score": 0.000781,
+      "focus_score": 0.00079,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 453,
+      "mean_score": 0.000168,
+      "combined_score": 0.002221,
+      "code_combined_score": 0.002217,
+      "focus_score": 0.002221,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 454,
+      "mean_score": 0.000168,
+      "combined_score": 0.001338,
+      "code_combined_score": 0.001339,
+      "focus_score": 0.001338,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 455,
+      "mean_score": 0.000176,
+      "combined_score": 0.000911,
+      "code_combined_score": 0.000583,
+      "focus_score": 0.000911,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 456,
+      "mean_score": 0.000246,
+      "combined_score": 0.001527,
+      "code_combined_score": 0.001518,
+      "focus_score": 0.001527,
+      "is_cut_point": false,
+      "token": "5"
+    },
+    {
+      "step_index": 457,
+      "mean_score": 0.000153,
+      "combined_score": 0.000681,
+      "code_combined_score": 0.000622,
+      "focus_score": 0.000681,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 458,
+      "mean_score": 0.00017,
+      "combined_score": 0.001368,
+      "code_combined_score": 0.001364,
+      "focus_score": 0.001368,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 459,
+      "mean_score": 0.000208,
+      "combined_score": 0.001309,
+      "code_combined_score": 0.001313,
+      "focus_score": 0.001309,
+      "is_cut_point": false,
+      "token": ","
+    },
+    {
+      "step_index": 460,
+      "mean_score": 0.000234,
+      "combined_score": 0.001059,
+      "code_combined_score": 0.000883,
+      "focus_score": 0.001059,
+      "is_cut_point": false,
+      "token": " "
+    },
+    {
+      "step_index": 461,
+      "mean_score": 0.000297,
+      "combined_score": 0.001917,
+      "code_combined_score": 0.001905,
+      "focus_score": 0.001917,
+      "is_cut_point": false,
+      "token": "2"
+    },
+    {
+      "step_index": 462,
+      "mean_score": 0.00017,
+      "combined_score": 0.000825,
+      "code_combined_score": 0.000707,
+      "focus_score": 0.000825,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 463,
+      "mean_score": 0.000284,
+      "combined_score": 0.001929,
+      "code_combined_score": 0.001925,
+      "focus_score": 0.001929,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 464,
+      "mean_score": 0.000525,
+      "combined_score": 0.001776,
+      "code_combined_score": 0.001808,
+      "focus_score": 0.001776,
+      "is_cut_point": false,
+      "token": "]`"
+    },
+    {
+      "step_index": 465,
+      "mean_score": 0.000433,
+      "combined_score": 0.0014,
+      "code_combined_score": 0.001449,
+      "focus_score": 0.0014,
+      "is_cut_point": false,
+      "token": " that"
+    },
+    {
+      "step_index": 466,
+      "mean_score": 0.000386,
+      "combined_score": 0.001494,
+      "code_combined_score": 0.001539,
+      "focus_score": 0.001494,
+      "is_cut_point": false,
+      "token": " are"
+    },
+    {
+      "step_index": 467,
+      "mean_score": 0.000403,
+      "combined_score": 0.002225,
+      "code_combined_score": 0.002272,
+      "focus_score": 0.002225,
+      "is_cut_point": false,
+      "token": " closer"
+    },
+    {
+      "step_index": 468,
+      "mean_score": 0.000378,
+      "combined_score": 0.0019,
+      "code_combined_score": 0.001941,
+      "focus_score": 0.0019,
+      "is_cut_point": false,
+      "token": " than"
+    },
+    {
+      "step_index": 469,
+      "mean_score": 0.00047,
+      "combined_score": 0.002281,
+      "code_combined_score": 0.002326,
+      "focus_score": 0.002281,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 470,
+      "mean_score": 0.000343,
+      "combined_score": 0.001442,
+      "code_combined_score": 0.001463,
+      "focus_score": 0.001442,
+      "is_cut_point": false,
+      "token": "0"
+    },
+    {
+      "step_index": 471,
+      "mean_score": 0.000381,
+      "combined_score": 0.001475,
+      "code_combined_score": 0.001498,
+      "focus_score": 0.001475,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 472,
+      "mean_score": 0.000554,
+      "combined_score": 0.002856,
+      "code_combined_score": 0.002891,
+      "focus_score": 0.002856,
+      "is_cut_point": false,
+      "token": "3"
+    },
+    {
+      "step_index": 473,
+      "mean_score": 0.000438,
+      "combined_score": 0.002241,
+      "code_combined_score": 0.002305,
+      "focus_score": 0.002241,
+      "is_cut_point": true,
+      "token": "`"
+    },
+    {
+      "step_index": 474,
+      "mean_score": 0.00036,
+      "combined_score": 0.001476,
+      "code_combined_score": 0.001527,
+      "focus_score": 0.001476,
+      "is_cut_point": false,
+      "token": " to"
+    },
+    {
+      "step_index": 475,
+      "mean_score": 0.000306,
+      "combined_score": 0.001595,
+      "code_combined_score": 0.00163,
+      "focus_score": 0.001595,
+      "is_cut_point": false,
+      "token": " each"
+    },
+    {
+      "step_index": 476,
+      "mean_score": 0.000326,
+      "combined_score": 0.001493,
+      "code_combined_score": 0.001529,
+      "focus_score": 0.001493,
+      "is_cut_point": false,
+      "token": " other"
+    },
+    {
+      "step_index": 477,
+      "mean_score": 0.000467,
+      "combined_score": 0.001834,
+      "code_combined_score": 0.001898,
+      "focus_score": 0.001834,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 478,
+      "mean_score": 0.000444,
+      "combined_score": 0.002393,
+      "code_combined_score": 0.002473,
+      "focus_score": 0.002393,
+      "is_cut_point": false,
+      "token": " It"
+    },
+    {
+      "step_index": 479,
+      "mean_score": 0.000369,
+      "combined_score": 0.002398,
+      "code_combined_score": 0.002457,
+      "focus_score": 0.002398,
+      "is_cut_point": false,
+      "token": " should"
+    },
+    {
+      "step_index": 480,
+      "mean_score": 0.000318,
+      "combined_score": 0.001705,
+      "code_combined_score": 0.001752,
+      "focus_score": 0.001705,
+      "is_cut_point": false,
+      "token": " return"
+    },
+    {
+      "step_index": 481,
+      "mean_score": 0.000451,
+      "combined_score": 0.002091,
+      "code_combined_score": 0.002155,
+      "focus_score": 0.002091,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 482,
+      "mean_score": 0.000557,
+      "combined_score": 0.002202,
+      "code_combined_score": 0.002279,
+      "focus_score": 0.002202,
+      "is_cut_point": false,
+      "token": "True"
+    },
+    {
+      "step_index": 483,
+      "mean_score": 0.00055,
+      "combined_score": 0.001571,
+      "code_combined_score": 0.001616,
+      "focus_score": 0.001571,
+      "is_cut_point": false,
+      "token": "`."
+    },
+    {
+      "step_index": 484,
+      "mean_score": 0.000708,
+      "combined_score": 0.001456,
+      "code_combined_score": 0.001526,
+      "focus_score": 0.001456,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 485,
+      "mean_score": 0.001155,
+      "combined_score": 0.002421,
+      "code_combined_score": 0.002558,
+      "focus_score": 0.002421,
+      "is_cut_point": false,
+      "token": "\n"
+    },
+    {
+      "step_index": 486,
+      "mean_score": 0.001261,
+      "combined_score": 0.002357,
+      "code_combined_score": 0.002421,
+      "focus_score": 0.002357,
+      "is_cut_point": false,
+      "token": "You"
+    },
+    {
+      "step_index": 487,
+      "mean_score": 0.000756,
+      "combined_score": 0.001357,
+      "code_combined_score": 0.001246,
+      "focus_score": 0.001357,
+      "is_cut_point": false,
+      "token": " can"
+    },
+    {
+      "step_index": 488,
+      "mean_score": 0.000907,
+      "combined_score": 0.00155,
+      "code_combined_score": 0.001559,
+      "focus_score": 0.00155,
+      "is_cut_point": false,
+      "token": " run"
+    },
+    {
+      "step_index": 489,
+      "mean_score": 0.000971,
+      "combined_score": 0.001657,
+      "code_combined_score": 0.001707,
+      "focus_score": 0.001657,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 490,
+      "mean_score": 0.000866,
+      "combined_score": 0.00142,
+      "code_combined_score": 0.001456,
+      "focus_score": 0.00142,
+      "is_cut_point": false,
+      "token": " provided"
+    },
+    {
+      "step_index": 491,
+      "mean_score": 0.000933,
+      "combined_score": 0.00137,
+      "code_combined_score": 0.001403,
+      "focus_score": 0.00137,
+      "is_cut_point": false,
+      "token": " test"
+    },
+    {
+      "step_index": 492,
+      "mean_score": 0.00198,
+      "combined_score": 0.003067,
+      "code_combined_score": 0.003044,
+      "focus_score": 0.003067,
+      "is_cut_point": false,
+      "token": " cases"
+    },
+    {
+      "step_index": 493,
+      "mean_score": 0.000526,
+      "combined_score": 0.000939,
+      "code_combined_score": 0.000962,
+      "focus_score": 0.000939,
+      "is_cut_point": false,
+      "token": " using"
+    },
+    {
+      "step_index": 494,
+      "mean_score": 0.001305,
+      "combined_score": 0.002012,
+      "code_combined_score": 0.002043,
+      "focus_score": 0.002012,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 495,
+      "mean_score": 0.000456,
+      "combined_score": 0.000655,
+      "code_combined_score": 0.00066,
+      "focus_score": 0.000655,
+      "is_cut_point": false,
+      "token": " `"
+    },
+    {
+      "step_index": 496,
+      "mean_score": 0.000514,
+      "combined_score": 0.000865,
+      "code_combined_score": 0.000883,
+      "focus_score": 0.000865,
+      "is_cut_point": false,
+      "token": "do"
+    },
+    {
+      "step_index": 497,
+      "mean_score": 0.000428,
+      "combined_score": 0.000629,
+      "code_combined_score": 0.000638,
+      "focus_score": 0.000629,
+      "is_cut_point": false,
+      "token": "ct"
+    },
+    {
+      "step_index": 498,
+      "mean_score": 0.000491,
+      "combined_score": 0.000794,
+      "code_combined_score": 0.000813,
+      "focus_score": 0.000794,
+      "is_cut_point": false,
+      "token": "est"
+    },
+    {
+      "step_index": 499,
+      "mean_score": 0.001195,
+      "combined_score": 0.001931,
+      "code_combined_score": 0.001929,
+      "focus_score": 0.001931,
+      "is_cut_point": false,
+      "token": "`"
+    },
+    {
+      "step_index": 500,
+      "mean_score": 0.000547,
+      "combined_score": 0.000931,
+      "code_combined_score": 0.00095,
+      "focus_score": 0.000931,
+      "is_cut_point": false,
+      "token": " module"
+    },
+    {
+      "step_index": 501,
+      "mean_score": 0.001126,
+      "combined_score": 0.002176,
+      "code_combined_score": 0.001689,
+      "focus_score": 0.002176,
+      "is_cut_point": false,
+      "token": " to"
+    },
+    {
+      "step_index": 502,
+      "mean_score": 0.000476,
+      "combined_score": 0.000814,
+      "code_combined_score": 0.000716,
+      "focus_score": 0.000814,
+      "is_cut_point": false,
+      "token": " verify"
+    },
+    {
+      "step_index": 503,
+      "mean_score": 0.00038,
+      "combined_score": 0.000703,
+      "code_combined_score": 0.00068,
+      "focus_score": 0.000703,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 504,
+      "mean_score": 0.000469,
+      "combined_score": 0.000877,
+      "code_combined_score": 0.000771,
+      "focus_score": 0.000877,
+      "is_cut_point": false,
+      "token": " correctness"
+    },
+    {
+      "step_index": 505,
+      "mean_score": 0.000563,
+      "combined_score": 0.002622,
+      "code_combined_score": 0.002695,
+      "focus_score": 0.002622,
+      "is_cut_point": true,
+      "token": " of"
+    },
+    {
+      "step_index": 506,
+      "mean_score": 0.000519,
+      "combined_score": 0.001773,
+      "code_combined_score": 0.001824,
+      "focus_score": 0.001773,
+      "is_cut_point": false,
+      "token": " the"
+    },
+    {
+      "step_index": 507,
+      "mean_score": 0.001146,
+      "combined_score": 0.00335,
+      "code_combined_score": 0.003442,
+      "focus_score": 0.00335,
+      "is_cut_point": false,
+      "token": " function"
+    },
+    {
+      "step_index": 508,
+      "mean_score": 0.001666,
+      "combined_score": 0.004603,
+      "code_combined_score": 0.004724,
+      "focus_score": 0.004603,
+      "is_cut_point": false,
+      "token": "."
+    },
+    {
+      "step_index": 509,
+      "mean_score": 0.001278,
+      "combined_score": 0.002962,
+      "code_combined_score": 0.003033,
+      "focus_score": 0.002962,
+      "is_cut_point": false,
+      "token": "<|eot_id|>"
+    },
+    {
+      "step_index": 510,
+      "mean_score": 0.001497,
+      "combined_score": 0.003535,
+      "code_combined_score": 0.002502,
+      "focus_score": 0.003535,
+      "is_cut_point": false,
+      "token": "<|endoftext|>"
+    },
+    {
+      "step_index": 511,
+      "mean_score": 0.003233,
+      "combined_score": 0.007648,
+      "code_combined_score": 0.00516,
+      "focus_score": 0.007648,
+      "is_cut_point": false,
+      "token": "<|endoftext|>"
+    }
+  ]
+}
