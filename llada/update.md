@@ -1,5 +1,10 @@
-Under this setting, humaneval acc = 50.0
-[8, 11, 28, 29, 30]
-spike_multiplier: float = 2.0,
-relative_ratio: float = 3.0,
-init_block_length=16, min_block_length=4, gen_length=512
+Under this setting, humaneval acc = 51.22
+DEFAULT_SEED = int(os.environ.get("LLADA_SEED", "1234"))
+ANCHOR_LAYER_INDICES = (13, 22, 29, 30, 31)
+CONSENSUS_WEIGHT = 0.90
+LOCAL_PEAK_WEIGHT = 0.60
+BOUNDARY_JUMP_WEIGHT = 0.45
+DEFAULT_MAX_DYNAMIC_BLOCK = 64
+DEFAULT_MIN_DYNAMIC_BLOCK = 4
+DEFAULT_DYNAMIC_WARMUP_BLOCKS = 2
+BALANCE_EPS = 1e-6

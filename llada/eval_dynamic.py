@@ -38,6 +38,14 @@ import time
 import torch._dynamo
 
 DEFAULT_SEED = int(os.environ.get("LLADA_SEED", "1234"))
+ANCHOR_LAYER_INDICES = (13, 22, 29, 30, 31)
+CONSENSUS_WEIGHT = 0.90
+LOCAL_PEAK_WEIGHT = 0.60
+BOUNDARY_JUMP_WEIGHT = 0.45
+DEFAULT_MAX_DYNAMIC_BLOCK = 16
+DEFAULT_MIN_DYNAMIC_BLOCK = 4
+DEFAULT_DYNAMIC_WARMUP_BLOCKS = 2
+BALANCE_EPS = 1e-6
 
 
 def add_gumbel_noise(logits, temperature):
@@ -273,20 +281,127 @@ def _sanitize_attention_tensor(values: torch.Tensor) -> torch.Tensor:
     return torch.nan_to_num(values.float(), nan=0.0, posinf=0.0, neginf=0.0)
 
 
+def _window_mean(values: torch.Tensor, start: int, end: int) -> torch.Tensor:
+    if end <= start:
+        return values.new_tensor(0.0)
+    return values[start:end].mean()
+
+
+def _normalize_feature(values: torch.Tensor) -> torch.Tensor:
+    values = _sanitize_attention_tensor(values)
+    mean = values.mean()
+    std = values.std(unbiased=False)
+    if std.item() < BALANCE_EPS:
+        return torch.zeros_like(values)
+    return torch.relu((values - mean) / (std + BALANCE_EPS))
+
+
+def _compute_balanced_weights(features, priors):
+    weights = []
+    for feature, prior in zip(features, priors):
+        strength = feature.std(unbiased=False).item()
+        weights.append(max(prior, BALANCE_EPS) * max(strength, BALANCE_EPS))
+
+    total = sum(weights)
+    if total <= 0:
+        total = sum(max(prior, BALANCE_EPS) for prior in priors)
+        weights = [max(prior, BALANCE_EPS) / total for prior in priors]
+    else:
+        weights = [weight / total for weight in weights]
+    return weights
+
+
+def compute_structural_consensus_scores(
+    selected_attn_layers,
+    prefix_start: int,
+    current_s: int,
+    window_size: int,
+):
+    """Pure structural score from cross-layer agreement and local boundary sharpness."""
+    if window_size <= 0 or prefix_start >= current_s or not selected_attn_layers:
+        return None
+
+    layer_scores = []
+    for layer_attn in selected_attn_layers:
+        rtm = layer_attn[0, prefix_start:current_s, current_s: current_s + window_size]
+        if rtm.numel() == 0 or rtm.shape[0] == 0:
+            continue
+        layer_scores.append(_sanitize_attention_tensor(rtm.sum(dim=0)))
+
+    if not layer_scores:
+        return None
+
+    score_matrix = torch.stack(layer_scores, dim=0)
+    mean_scores = score_matrix.mean(dim=0)
+    topk_per_layer = max(1, min(window_size, window_size // 4))
+    consensus = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
+    for scores in score_matrix:
+        top_indices = torch.topk(scores, k=topk_per_layer).indices
+        consensus[top_indices] += 1.0
+    consensus = consensus / len(layer_scores)
+
+    local_peak = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
+    boundary_jump = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
+    neighborhood = 2
+    jump_window = 3
+
+    for idx in range(window_size):
+        left_start = max(0, idx - neighborhood)
+        left_end = idx
+        right_start = idx + 1
+        right_end = min(window_size, idx + 1 + neighborhood)
+
+        left_mean = _window_mean(mean_scores, left_start, left_end)
+        right_mean = _window_mean(mean_scores, right_start, right_end)
+        surrounding = 0.5 * (left_mean + right_mean)
+        local_peak[idx] = torch.relu(mean_scores[idx] - surrounding)
+
+        jump_left_start = max(0, idx - jump_window)
+        jump_left_end = idx + 1
+        jump_right_start = idx + 1
+        jump_right_end = min(window_size, idx + 1 + jump_window)
+        left_context = _window_mean(mean_scores, jump_left_start, jump_left_end)
+        right_context = _window_mean(mean_scores, jump_right_start, jump_right_end)
+        boundary_jump[idx] = torch.abs(left_context - right_context)
+
+    normalized_consensus = _normalize_feature(consensus)
+    normalized_peak = _normalize_feature(local_peak)
+    normalized_jump = _normalize_feature(boundary_jump)
+    balanced_weights = _compute_balanced_weights(
+        [normalized_consensus, normalized_peak, normalized_jump],
+        [CONSENSUS_WEIGHT, LOCAL_PEAK_WEIGHT, BOUNDARY_JUMP_WEIGHT],
+    )
+    consensus_weight, peak_weight, jump_weight = balanced_weights
+
+    structure_boost = (
+        consensus_weight * normalized_consensus
+        + peak_weight * normalized_peak
+        + jump_weight * normalized_jump
+    )
+    boundary_scores = mean_scores * (1.0 + structure_boost)
+    boundary_scores = _sanitize_attention_tensor(boundary_scores)
+    baseline = boundary_scores.mean()
+    return {
+        "score": boundary_scores,
+        "baseline": baseline,
+        "consensus": consensus,
+        "local_peak": local_peak,
+        "boundary_jump": boundary_jump,
+        "balanced_weights": {
+            "consensus": consensus_weight,
+            "local_peak": peak_weight,
+            "boundary_jump": jump_weight,
+        },
+    }
+
+
 def compute_dependency_scores(
     avg_attn: torch.Tensor,
     prefix_start: int,
     current_s: int,
     window_size: int,
-    topk_ratio: float = 0.25,
-    mean_weight: float = 0.2,
-    topk_weight: float = 0.5,
-    max_weight: float = 0.3,
 ):
-    """
-    Build a stronger dependency score from the whole confirmed prefix to the current probe window.
-    Returns a dict of per-position statistics for both visualization and boundary search.
-    """
+    """Use a simple prefix-to-mask attention sum as the dependency score."""
     if window_size <= 0 or prefix_start >= current_s:
         return None
 
@@ -295,39 +410,22 @@ def compute_dependency_scores(
         return None
 
     real_to_mask_attn = _sanitize_attention_tensor(real_to_mask_attn)
-    mean_scores = real_to_mask_attn.mean(dim=0)
-    max_scores = real_to_mask_attn.max(dim=0).values
-
-    topk_count = max(1, int(math.ceil(real_to_mask_attn.shape[0] * topk_ratio)))
-    topk_scores = torch.topk(real_to_mask_attn, k=topk_count, dim=0).values.mean(dim=0)
-    combined_scores = (
-        mean_weight * mean_scores
-        + topk_weight * topk_scores
-        + max_weight * max_scores
-    )
-
-    combined_scores = _sanitize_attention_tensor(combined_scores)
-    baseline = combined_scores.mean()
-    variation = combined_scores.std(unbiased=False)
+    attention_sum = _sanitize_attention_tensor(real_to_mask_attn.sum(dim=0))
+    baseline = attention_sum.mean()
     return {
-        "mean": mean_scores,
-        "topk_mean": topk_scores,
-        "max": max_scores,
-        "combined": combined_scores,
+        "sum": attention_sum,
         "baseline": baseline,
-        "variation": variation,
     }
 
 
 def find_dependency_boundary(
     avg_attn: torch.Tensor,
+    selected_attn_layers,
     current_s: int,
     prefix_start: int,
     min_block_length: int,
     window_size: int,       # 💡 新增：大探测视野 (比如 128)
     fallback_length: int,   # 💡 新增：找不到时的安全退回长度 (比如 32)
-    spike_multiplier: float = 2.0,
-    relative_ratio: float = 3.0,
 ):
     """
     【大视窗前文共识探测】：在更大的 window_size 视野内寻找突刺。
@@ -338,8 +436,8 @@ def find_dependency_boundary(
     if window_size <= min_block_length or prefix_start >= current_s:
         return min(fallback_length, window_size)
 
-    score_pack = compute_dependency_scores(
-        avg_attn=avg_attn,
+    score_pack = compute_structural_consensus_scores(
+        selected_attn_layers=selected_attn_layers,
         prefix_start=prefix_start,
         current_s=current_s,
         window_size=window_size,
@@ -347,30 +445,33 @@ def find_dependency_boundary(
     if score_pack is None:
         return min(fallback_length, window_size)
 
-    attention_scores = score_pack["combined"]
+    attention_scores = score_pack["score"]
     baseline = score_pack["baseline"].item()
-    variation = score_pack["variation"].item()
-    absolute_threshold = baseline * spike_multiplier
-    contrast_threshold = baseline + variation
+    candidate_threshold = baseline
+    rightmost_candidate = None
 
-    # 3. 在大视窗内扫描寻找共识突刺
+    # 3. 在大视窗内收集候选，优先选择最右侧的有效边界
     for k in range(min_block_length, window_size):
         current_score = attention_scores[k].item()
         if current_score <= 0:
             continue
 
-        left_context = attention_scores[:k]
-        local_baseline = left_context.mean().item() if left_context.numel() > 0 else baseline
-        local_baseline = max(local_baseline, 1e-8)
+        if current_score >= candidate_threshold:
+            rightmost_candidate = k
 
-        if current_score > max(absolute_threshold, contrast_threshold) and current_score / local_baseline >= relative_ratio:
-            best_k = k + 1
-            print(
-                f"    🔭 [混合注意力切分] 视野 {window_size} | 词 {k} 处截断，"
-                f"score={current_score:.4f}, baseline={baseline:.4f}, std={variation:.4f}, "
-                f"local_ratio={current_score / local_baseline:.2f}"
-            )
-            return best_k
+    if rightmost_candidate is not None:
+        best_k = rightmost_candidate + 1
+        print(
+            f"    🔭 [结构信号切分] 视野 {window_size} | 词 {rightmost_candidate} 处截断，"
+            f"score={attention_scores[rightmost_candidate].item():.4f}, baseline={baseline:.4f}, "
+            f"consensus={score_pack['consensus'][rightmost_candidate].item():.2f}, "
+            f"peak={score_pack['local_peak'][rightmost_candidate].item():.4f}, "
+            f"jump={score_pack['boundary_jump'][rightmost_candidate].item():.4f}, "
+            f"w=({score_pack['balanced_weights']['consensus']:.2f},"
+            f"{score_pack['balanced_weights']['local_peak']:.2f},"
+            f"{score_pack['balanced_weights']['boundary_jump']:.2f})"
+        )
+        return best_k
 
     # 4. 如果遍历完了整个大视窗都没找到突刺，为了安全，退回 32
     return min(fallback_length, window_size)
@@ -379,10 +480,10 @@ def find_dependency_boundary(
 
 @torch.no_grad()
 def generate_with_dynamic_dual_cache(
-    model, prompt, steps=128, gen_length=128, init_block_length=16, temperature=0.,
-    remasking='low_confidence', mask_id=126336, threshold=None, min_block_length=4,
+    model, prompt, steps=128, gen_length=128, init_block_length=DEFAULT_MAX_DYNAMIC_BLOCK, temperature=0.,
+    remasking='low_confidence', mask_id=126336, threshold=None, min_block_length=DEFAULT_MIN_DYNAMIC_BLOCK,
     enable_dynamic_block=True,
-    enable_attn_remask=False
+    enable_attn_remask=False,
 ): 
     assert prompt.shape[0] == 1, "Batch size > 1 is not supported"
     
@@ -395,7 +496,7 @@ def generate_with_dynamic_dual_cache(
     nfe_history = []  
     block_history = []
     attention_history = []
-    warmup_blocks = 2
+    warmup_blocks = DEFAULT_DYNAMIC_WARMUP_BLOCKS
     tail_merge_threshold = max(4, min_block_length)
     
     prompt_length = prompt.shape[1]
@@ -423,7 +524,6 @@ def generate_with_dynamic_dual_cache(
         probe_limit = min(init_block_length, gen_length - generated_length)
         
         remaining_length = gen_length - generated_length
-        # 探测视野：放宽到全局长度的 2.5% (比如 512 的 12.5% 就是 64)
         window_size = min(int(0.25 * gen_length), remaining_length)
         # 安全退回长度：32
         fallback_length = min(init_block_length, remaining_length)
@@ -443,7 +543,7 @@ def generate_with_dynamic_dual_cache(
             #     )
 
             rollout = None
-            selected_layer_indices = [8, 11, 28, 29, 30]
+            selected_layer_indices = ANCHOR_LAYER_INDICES
 
             truncated_captured = [
                 captured[i] for i in selected_layer_indices
@@ -470,6 +570,7 @@ def generate_with_dynamic_dual_cache(
             if avg_attn is not None and dynamic_enabled_this_step:
                 block_length = find_dependency_boundary(
                     avg_attn=avg_attn,
+                    selected_attn_layers=truncated_captured,
                     current_s=current_s,
                     prefix_start=prefix_start,
                     min_block_length=min_block_length,
@@ -492,7 +593,7 @@ def generate_with_dynamic_dual_cache(
                     window_size=block_length,
                 )
                 if score_pack is not None:
-                    focus_scores = score_pack["combined"]
+                    focus_scores = score_pack["sum"]
                     attention_history.extend(focus_scores.cpu().float().numpy().tolist())
                 else:
                     attention_history.extend([0.0] * block_length)
@@ -603,7 +704,9 @@ class LLaDAEvalHarness(LM):
         is_check_greedy=True, steps=1024, gen_length=1024, block_length=1024,
         remasking='low_confidence', device="cuda", use_cache=False, threshold=None,
         factor=None, save_dir=None, show_speed=False, dual_cache=False,
-        use_dynamic_block=False, smooth_window=3, seed=DEFAULT_SEED, **kwargs
+        use_dynamic_block=False, max_block_length=DEFAULT_MAX_DYNAMIC_BLOCK,
+        min_block_length=DEFAULT_MIN_DYNAMIC_BLOCK, smooth_window=3,
+        seed=DEFAULT_SEED, **kwargs
     ):
         super().__init__()
         self.seed = int(seed)
@@ -654,6 +757,8 @@ class LLaDAEvalHarness(LM):
         self.show_speed = show_speed
         self.dual_cache = dual_cache
         self.use_dynamic_block = use_dynamic_block
+        self.max_block_length = int(max_block_length)
+        self.min_block_length = int(min_block_length)
         self.smooth_window = int(smooth_window)
 
     @property
@@ -781,7 +886,9 @@ class LLaDAEvalHarness(LM):
                         generated_answer, nfe, block_boundaries, attn_history = generate_with_dynamic_dual_cache(
                             model=self.model, prompt=input_ids, steps=self.steps, gen_length=self.gen_length,
                             temperature=0, remasking=self.remasking, threshold=self.threshold,
-                            mask_id=self.mask_id, 
+                            mask_id=self.mask_id,
+                            init_block_length=self.max_block_length,
+                            min_block_length=self.min_block_length,
                         )
                     else:
                         generated_answer, nfe = generate_with_dual_cache(

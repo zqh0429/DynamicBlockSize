@@ -82,11 +82,16 @@ def _compute_combined_scores(
 
 
 def _compute_score_bundle(real_to_mask_attn: torch.Tensor):
-    mean_scores = _sanitize_attention_tensor(real_to_mask_attn.mean(dim=0)) if real_to_mask_attn.numel() > 0 and real_to_mask_attn.shape[0] > 0 else torch.zeros(real_to_mask_attn.shape[-1], device=real_to_mask_attn.device, dtype=torch.float32)
-    combined_scores = _compute_combined_scores(real_to_mask_attn)
+    if real_to_mask_attn.numel() > 0 and real_to_mask_attn.shape[0] > 0:
+        real_to_mask_attn = _sanitize_attention_tensor(real_to_mask_attn)
+        mean_scores = real_to_mask_attn.mean(dim=0)
+        sum_scores = _sanitize_attention_tensor(real_to_mask_attn.sum(dim=0))
+    else:
+        mean_scores = torch.zeros(real_to_mask_attn.shape[-1], device=real_to_mask_attn.device, dtype=torch.float32)
+        sum_scores = torch.zeros(real_to_mask_attn.shape[-1], device=real_to_mask_attn.device, dtype=torch.float32)
     return {
         "mean": mean_scores,
-        "combined": combined_scores,
+        "combined": sum_scores,
     }
 
 
@@ -105,7 +110,7 @@ def _find_code_start_index(generated_tokens):
 
 
 def visualize_global_attention(score_history_bundle, block_boundaries, sample_id, generated_tokens=None, save_dir="global_attention_viz"):
-    """画出全局序列生成的 mean/combined/code-only combined 趋势。"""
+    """画出全局序列生成的 mean/sum/code-only sum 趋势。"""
     history_mean = _sanitize_attention_history(score_history_bundle["mean"])
     history_combined = _sanitize_attention_history(score_history_bundle["combined"])
     history_code = _sanitize_attention_history(score_history_bundle["code_combined"])
@@ -115,8 +120,8 @@ def visualize_global_attention(score_history_bundle, block_boundaries, sample_id
     plt.figure(figsize=(fig_width, 6))
     
     plt.plot(history_mean, color='#7f7f7f', linewidth=1.2, marker='.', markersize=3, label='Mean Score')
-    plt.plot(history_combined, color='#d62728', linewidth=1.5, marker='.', markersize=4, label='Combined Score')
-    plt.plot(history_code, color='#2ca02c', linewidth=1.5, marker='.', markersize=4, label='Code-only Combined')
+    plt.plot(history_combined, color='#d62728', linewidth=1.5, marker='.', markersize=4, label='Sum Score')
+    plt.plot(history_code, color='#2ca02c', linewidth=1.5, marker='.', markersize=4, label='Code-only Sum')
     
     current_x = 0
     for i, size in enumerate(block_boundaries):
@@ -145,7 +150,7 @@ def visualize_global_attention(score_history_bundle, block_boundaries, sample_id
     plt.close()
 
 def save_global_attention_json(score_history_bundle, block_boundaries, sample_id, generated_tokens=None, save_dir="global_attention_data"):
-    """导出全局 mean/combined/code-only combined JSON 数据，并与实际 token 对齐。"""
+    """导出全局 mean/sum/code-only sum JSON 数据，并与实际 token 对齐。"""
     history_mean = _sanitize_attention_history(score_history_bundle["mean"])
     history_combined = _sanitize_attention_history(score_history_bundle["combined"])
     history_code = _sanitize_attention_history(score_history_bundle["code_combined"])
@@ -169,7 +174,9 @@ def save_global_attention_json(score_history_bundle, block_boundaries, sample_id
             "step_index": i,
             "mean_score": round(history_mean[i], 6),
             "combined_score": round(history_combined[i], 6),
+            "sum_score": round(history_combined[i], 6),
             "code_combined_score": round(history_code[i], 6),
+            "code_sum_score": round(history_code[i], 6),
             "focus_score": round(history_combined[i], 6),
             "is_cut_point": i in cut_positions
         }
@@ -182,7 +189,7 @@ def save_global_attention_json(score_history_bundle, block_boundaries, sample_id
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def save_layerwise_combined_score_json(layer_score_bundle, block_boundaries, sample_id, generated_tokens=None, save_dir="layers_attn"):
-    """Export per-layer per-position mean/combined/code-only scores aligned with generated tokens."""
+    """Export per-layer per-position mean/sum/code-only sum scores aligned with generated tokens."""
     os.makedirs(save_dir, exist_ok=True)
     if not layer_score_bundle["combined"]:
         return
@@ -214,7 +221,9 @@ def save_layerwise_combined_score_json(layer_score_bundle, block_boundaries, sam
                 "step_index": step_idx,
                 "mean_score": round(mean_history[step_idx], 6),
                 "combined_score": round(combined_history[step_idx], 6),
+                "sum_score": round(combined_history[step_idx], 6),
                 "code_combined_score": round(code_history[step_idx], 6),
+                "code_sum_score": round(code_history[step_idx], 6),
                 "is_cut_point": step_idx in cut_positions
             }
             if generated_tokens and step_idx < len(generated_tokens):
@@ -228,7 +237,7 @@ def save_layerwise_combined_score_json(layer_score_bundle, block_boundaries, sam
 
 
 def save_individual_layer_plots(layer_score_bundle, block_boundaries, generated_tokens=None, save_dir="layers_attn"):
-    """为每一层生成 mean/combined/code-only 对照图，并与 token 对齐。"""
+    """为每一层生成 mean/sum/code-only sum 对照图，并与 token 对齐。"""
     os.makedirs(save_dir, exist_ok=True)
     if not layer_score_bundle["combined"] or len(layer_score_bundle["combined"]) == 0:
         return
@@ -244,8 +253,8 @@ def save_individual_layer_plots(layer_score_bundle, block_boundaries, generated_
         code_history = _sanitize_attention_history(layer_score_bundle["code_combined"][layer_idx])
         plt.figure(figsize=(fig_width, 5))
         plt.plot(mean_history, color='#7f7f7f', linewidth=1.0, marker='.', markersize=3, label='Mean')
-        plt.plot(combined_history, color='#d62728', linewidth=1.4, marker='.', markersize=4, label='Combined')
-        plt.plot(code_history, color='#2ca02c', linewidth=1.4, marker='.', markersize=4, label='Code-only Combined')
+        plt.plot(combined_history, color='#d62728', linewidth=1.4, marker='.', markersize=4, label='Sum')
+        plt.plot(code_history, color='#2ca02c', linewidth=1.4, marker='.', markersize=4, label='Code-only Sum')
         
         current_x = 0
         for i, size in enumerate(block_boundaries):
@@ -253,7 +262,7 @@ def save_individual_layer_plots(layer_score_bundle, block_boundaries, generated_
             if i < len(block_boundaries) - 1:
                 plt.axvline(x=current_x - 0.5, color='#2ca02c', linestyle='--', alpha=0.8, linewidth=1.5)
                 
-        plt.title(f"Layer {layer_idx:02d} Score Comparison (Prefix -> Mask)", fontsize=14, pad=10)
+        plt.title(f"Layer {layer_idx:02d} Score Comparison (All Prefix -> Next Block)", fontsize=14, pad=10)
         plt.ylabel("Score", fontsize=12)
         
         if clean_tokens and len(clean_tokens) == seq_len:
