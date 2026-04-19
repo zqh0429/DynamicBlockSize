@@ -37,14 +37,14 @@ import json
 import time
 import torch._dynamo
 
-DEFAULT_SEED = int(os.environ.get("LLADA_SEED", "1234"))
-ANCHOR_LAYER_INDICES = (13, 22, 29, 30, 31)
-CONSENSUS_WEIGHT = 0.90
-LOCAL_PEAK_WEIGHT = 0.60
-BOUNDARY_JUMP_WEIGHT = 0.45
-DEFAULT_MAX_DYNAMIC_BLOCK = 16
-DEFAULT_MIN_DYNAMIC_BLOCK = 4
+DEFAULT_SEED = int(os.environ.get("LLADA_SEED", "42"))
+ANCHOR_LAYER_INDICES = (2,3,6,7,8)
+DEFAULT_MAX_DYNAMIC_BLOCK = 32
+DEFAULT_MIN_DYNAMIC_BLOCK = 16
 DEFAULT_DYNAMIC_WARMUP_BLOCKS = 2
+DEFAULT_DYNAMIC_WINDOW_FACTOR = 2
+DEFAULT_TAIL_MERGE_THRESHOLD = 12
+DEFAULT_LATE_STAGE_STATIC_TOKENS = 48
 BALANCE_EPS = 1e-6
 
 
@@ -281,12 +281,6 @@ def _sanitize_attention_tensor(values: torch.Tensor) -> torch.Tensor:
     return torch.nan_to_num(values.float(), nan=0.0, posinf=0.0, neginf=0.0)
 
 
-def _window_mean(values: torch.Tensor, start: int, end: int) -> torch.Tensor:
-    if end <= start:
-        return values.new_tensor(0.0)
-    return values[start:end].mean()
-
-
 def _normalize_feature(values: torch.Tensor) -> torch.Tensor:
     values = _sanitize_attention_tensor(values)
     mean = values.mean()
@@ -296,28 +290,13 @@ def _normalize_feature(values: torch.Tensor) -> torch.Tensor:
     return torch.relu((values - mean) / (std + BALANCE_EPS))
 
 
-def _compute_balanced_weights(features, priors):
-    weights = []
-    for feature, prior in zip(features, priors):
-        strength = feature.std(unbiased=False).item()
-        weights.append(max(prior, BALANCE_EPS) * max(strength, BALANCE_EPS))
-
-    total = sum(weights)
-    if total <= 0:
-        total = sum(max(prior, BALANCE_EPS) for prior in priors)
-        weights = [max(prior, BALANCE_EPS) / total for prior in priors]
-    else:
-        weights = [weight / total for weight in weights]
-    return weights
-
-
 def compute_structural_consensus_scores(
     selected_attn_layers,
     prefix_start: int,
     current_s: int,
     window_size: int,
 ):
-    """Pure structural score from cross-layer agreement and local boundary sharpness."""
+    """Raw prefix-to-window attention with soft cross-layer consensus."""
     if window_size <= 0 or prefix_start >= current_s or not selected_attn_layers:
         return None
 
@@ -333,65 +312,20 @@ def compute_structural_consensus_scores(
 
     score_matrix = torch.stack(layer_scores, dim=0)
     mean_scores = score_matrix.mean(dim=0)
-    topk_per_layer = max(1, min(window_size, window_size // 4))
-    consensus = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
-    for scores in score_matrix:
-        top_indices = torch.topk(scores, k=topk_per_layer).indices
-        consensus[top_indices] += 1.0
-    consensus = consensus / len(layer_scores)
-
-    local_peak = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
-    boundary_jump = torch.zeros(window_size, device=mean_scores.device, dtype=torch.float32)
-    neighborhood = 2
-    jump_window = 3
-
-    for idx in range(window_size):
-        left_start = max(0, idx - neighborhood)
-        left_end = idx
-        right_start = idx + 1
-        right_end = min(window_size, idx + 1 + neighborhood)
-
-        left_mean = _window_mean(mean_scores, left_start, left_end)
-        right_mean = _window_mean(mean_scores, right_start, right_end)
-        surrounding = 0.5 * (left_mean + right_mean)
-        local_peak[idx] = torch.relu(mean_scores[idx] - surrounding)
-
-        jump_left_start = max(0, idx - jump_window)
-        jump_left_end = idx + 1
-        jump_right_start = idx + 1
-        jump_right_end = min(window_size, idx + 1 + jump_window)
-        left_context = _window_mean(mean_scores, jump_left_start, jump_left_end)
-        right_context = _window_mean(mean_scores, jump_right_start, jump_right_end)
-        boundary_jump[idx] = torch.abs(left_context - right_context)
-
-    normalized_consensus = _normalize_feature(consensus)
-    normalized_peak = _normalize_feature(local_peak)
-    normalized_jump = _normalize_feature(boundary_jump)
-    balanced_weights = _compute_balanced_weights(
-        [normalized_consensus, normalized_peak, normalized_jump],
-        [CONSENSUS_WEIGHT, LOCAL_PEAK_WEIGHT, BOUNDARY_JUMP_WEIGHT],
+    normalized_layers = torch.stack(
+        [_normalize_feature(layer_score) for layer_score in layer_scores],
+        dim=0,
     )
-    consensus_weight, peak_weight, jump_weight = balanced_weights
-
-    structure_boost = (
-        consensus_weight * normalized_consensus
-        + peak_weight * normalized_peak
-        + jump_weight * normalized_jump
-    )
-    boundary_scores = mean_scores * (1.0 + structure_boost)
+    soft_consensus = normalized_layers.mean(dim=0)
+    normalized_sum = _normalize_feature(mean_scores)
+    boundary_scores = normalized_sum * (1.0 + soft_consensus)
     boundary_scores = _sanitize_attention_tensor(boundary_scores)
     baseline = boundary_scores.mean()
     return {
         "score": boundary_scores,
         "baseline": baseline,
-        "consensus": consensus,
-        "local_peak": local_peak,
-        "boundary_jump": boundary_jump,
-        "balanced_weights": {
-            "consensus": consensus_weight,
-            "local_peak": peak_weight,
-            "boundary_jump": jump_weight,
-        },
+        "sum_score": mean_scores,
+        "soft_consensus": soft_consensus,
     }
 
 
@@ -427,12 +361,6 @@ def find_dependency_boundary(
     window_size: int,       # 💡 新增：大探测视野 (比如 128)
     fallback_length: int,   # 💡 新增：找不到时的安全退回长度 (比如 32)
 ):
-    """
-    【大视窗前文共识探测】：在更大的 window_size 视野内寻找突刺。
-    如果找到，直接在突刺处截断（允许超过 fallback_length）；
-    如果整个视野内都没有突刺，安全退回到 fallback_length。
-    """
-    # 保护逻辑
     if window_size <= min_block_length or prefix_start >= current_s:
         return min(fallback_length, window_size)
 
@@ -447,33 +375,72 @@ def find_dependency_boundary(
 
     attention_scores = score_pack["score"]
     baseline = score_pack["baseline"].item()
-    candidate_threshold = baseline
-    rightmost_candidate = None
+    total_mass = attention_scores.sum().item()
+    if total_mass <= 0:
+        return min(fallback_length, window_size)
 
-    # 3. 在大视窗内收集候选，优先选择最右侧的有效边界
-    for k in range(min_block_length, window_size):
-        current_score = attention_scores[k].item()
-        if current_score <= 0:
+    cumulative = torch.cumsum(attention_scores, dim=0)
+    global_density = total_mass / max(window_size, 1)
+    closure_values = []
+    objective_values = []
+
+    for k in range(window_size):
+        coverage = cumulative[k].item() / max(total_mass, BALANCE_EPS)
+        future_length = window_size - (k + 1)
+        future_mass = max(total_mass - cumulative[k].item(), 0.0)
+        future_density = future_mass / max(future_length, 1) if future_length > 0 else 0.0
+        leakage = future_density / max(global_density, BALANCE_EPS)
+        closure = coverage - leakage
+        objective = closure * attention_scores[k].item()
+        closure_values.append(closure)
+        objective_values.append(objective)
+
+    chosen_idx = None
+    best_local_objective = float("-inf")
+    # Do not let the very last token in the probe window dominate by construction:
+    # at the window end, coverage is always 1 and leakage is always 0.
+    search_end = max(min_block_length, window_size - 1)
+    for k in range(min_block_length - 1, search_end):
+        if closure_values[k] <= 0 or objective_values[k] <= 0:
             continue
+        left_val = objective_values[k - 1] if k - 1 >= min_block_length - 1 else float("-inf")
+        right_val = objective_values[k + 1] if k + 1 < search_end else float("-inf")
+        is_local_max = objective_values[k] >= left_val and objective_values[k] >= right_val
+        if is_local_max and objective_values[k] > best_local_objective:
+            best_local_objective = objective_values[k]
+            chosen_idx = k
 
-        if current_score >= candidate_threshold:
-            rightmost_candidate = k
+    if chosen_idx is None:
+        valid_fallback_candidates = [
+            idx
+            for idx in range(min_block_length - 1, search_end)
+            if closure_values[idx] > 0 and objective_values[idx] > 0
+        ]
+        if valid_fallback_candidates:
+            chosen_idx = max(
+                valid_fallback_candidates,
+                key=lambda idx: objective_values[idx],
+            )
+        else:
+            return min(fallback_length, window_size)
 
-    if rightmost_candidate is not None:
-        best_k = rightmost_candidate + 1
+    if chosen_idx is not None:
+        current_score = attention_scores[chosen_idx].item()
+        coverage = cumulative[chosen_idx].item() / max(total_mass, BALANCE_EPS)
+        future_length = window_size - (chosen_idx + 1)
+        future_mass = max(total_mass - cumulative[chosen_idx].item(), 0.0)
+        future_density = future_mass / max(future_length, 1) if future_length > 0 else 0.0
+        leakage = future_density / max(global_density, BALANCE_EPS)
+        closure_score = closure_values[chosen_idx]
         print(
-            f"    🔭 [结构信号切分] 视野 {window_size} | 词 {rightmost_candidate} 处截断，"
-            f"score={attention_scores[rightmost_candidate].item():.4f}, baseline={baseline:.4f}, "
-            f"consensus={score_pack['consensus'][rightmost_candidate].item():.2f}, "
-            f"peak={score_pack['local_peak'][rightmost_candidate].item():.4f}, "
-            f"jump={score_pack['boundary_jump'][rightmost_candidate].item():.4f}, "
-            f"w=({score_pack['balanced_weights']['consensus']:.2f},"
-            f"{score_pack['balanced_weights']['local_peak']:.2f},"
-            f"{score_pack['balanced_weights']['boundary_jump']:.2f})"
+            f"    🔭 [依赖闭包切分] 视野 {window_size} | 词 {chosen_idx} 处截断，"
+            f"score={current_score:.4f}, baseline={baseline:.4f}, "
+            f"sum={score_pack['sum_score'][chosen_idx].item():.4f}, "
+            f"consensus={score_pack['soft_consensus'][chosen_idx].item():.4f}, "
+            f"coverage={coverage:.4f}, leakage={leakage:.4f}, closure={closure_score:.4f}"
         )
-        return best_k
+        return chosen_idx + 1
 
-    # 4. 如果遍历完了整个大视窗都没找到突刺，为了安全，退回 32
     return min(fallback_length, window_size)
 
 # ==============================================================================
@@ -497,7 +464,7 @@ def generate_with_dynamic_dual_cache(
     block_history = []
     attention_history = []
     warmup_blocks = DEFAULT_DYNAMIC_WARMUP_BLOCKS
-    tail_merge_threshold = max(4, min_block_length)
+    tail_merge_threshold = max(DEFAULT_TAIL_MERGE_THRESHOLD, min_block_length)
     
     prompt_length = prompt.shape[1]
     prefix_start = 0
@@ -524,10 +491,19 @@ def generate_with_dynamic_dual_cache(
         probe_limit = min(init_block_length, gen_length - generated_length)
         
         remaining_length = gen_length - generated_length
-        window_size = min(int(0.25 * gen_length), remaining_length)
-        # 安全退回长度：32
+        # 探测视野控制在初始块长附近，避免窗口过大后退化成“大块近似固定切分”
+        window_size = min(
+            128,
+            remaining_length,
+        )
         fallback_length = min(init_block_length, remaining_length)
-        dynamic_enabled_this_step = enable_dynamic_block and len(block_history) >= warmup_blocks
+        # Be conservative near the end of generation so answer formatting is less likely to break.
+        late_stage_mode = remaining_length <= max(DEFAULT_LATE_STAGE_STATIC_TOKENS, init_block_length * 2)
+        dynamic_enabled_this_step = (
+            enable_dynamic_block
+            and len(block_history) >= warmup_blocks
+            and not late_stage_mode
+        )
         
         if len(captured) > 0:
             B, L_seq, S_seq = captured[0].shape
@@ -580,7 +556,7 @@ def generate_with_dynamic_dual_cache(
             else:
                 block_length = fallback_length
 
-            # Avoid creating tiny tail blocks like 1/2 tokens, which add NFE but rarely help quality.
+            # Merge tiny tail blocks so the final answer region is not fragmented into very short chunks.
             tail_length = remaining_length - block_length
             if 0 < tail_length <= tail_merge_threshold:
                 block_length = remaining_length
